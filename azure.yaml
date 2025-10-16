@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: m365-copilot
+metadata:
+  template: m365-copilot@0.0.1
+
+services:
+  food-catalog-api:
+    project: ./src/food-catalog-api
+    language: csharp
+    host: appservice
+    
+  hr-mcp-server:
+    project: ./src/hr-mcp-server
+    language: csharp
+    host: appservice
+    
+  purchasing-service:
+    project: ./src/purchasing-service
+    language: csharp
+    host: appservice
+    
+  food-shop:
+    project: ./src/food-shop
+    language: js
+    host: staticwebapp
+    dist: dist/food-shop/browser

@@ -1,0 +1,57 @@
+name: food-shop-ci-cd
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - "src/food-shop/**"
+
+jobs:
+  build_and_deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: "22.12.0"
+      FOOD_SHOP_APP_DIR: "src/food-shop"
+      FOOD_SHOP_DIST_DIR: "food-shop"
+      BUILD_CONFIGURATION: "production"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.FOOD_SHOP_APP_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        working-directory: ${{ env.FOOD_SHOP_APP_DIR }}
+
+      - name: Build Angular app
+        run: npm run build --configuration=${{ env.BUILD_CONFIGURATION }}
+        working-directory: ${{ env.FOOD_SHOP_APP_DIR }}
+
+      - name: Prepare deployment package
+        run: |
+          rm -rf app-build
+          mkdir -p app-build
+          cp -a ${{ env.FOOD_SHOP_APP_DIR }}/dist/${{ env.FOOD_SHOP_DIST_DIR }}/browser/. app-build/
+
+      - name: Copy Static Web App configuration
+        run: cp ${{ env.FOOD_SHOP_APP_DIR }}/src/assets/staticwebapp.config.json app-build/staticwebapp.config.json
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: app-build
+          skip_app_build: true
+          skip_api_build: true
+          is_static_export: true

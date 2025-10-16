@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+
+# Azure Developer CLI
+.azure/
+# Ignore .secret-stack folder
+.secret-stack

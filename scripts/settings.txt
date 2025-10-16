@@ -1,0 +1,35 @@
+    //Github Copilot
+    "chat.agent.enabled": true,
+    "chat.promptFiles": true,
+    "chat.mcp.discovery.enabled": {
+        "claude-desktop": true,
+        "windsurf": true,
+        "cursor-global": true,
+        "cursor-workspace": true
+    },
+    "chat.detectParticipant.enabled": true,
+    "terminal.integrated.suggest.enabled": true,
+    "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+        {
+            "text": "Describe the pull request in detail, including the purpose of the changes and any relevant context in a list format."
+        }
+    ],
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "text": "Be extremely detailed with the file changes and the reason for the change in a list format."
+        }
+    ],
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.editor.temporalContext.enabled": true,
+    "github.copilot.chat.generateTests.codeLens": true,
+    "github.copilot.chat.languageContext.typescript.enabled": true,
+    "github.copilot.chat.startDebugging.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "markdown": true,
+        "plaintext": false,
+        "scminput": false,
+        "yaml": true
+    },
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.selectedCompletionModel": "",
