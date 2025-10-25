@@ -68,12 +68,12 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Consuming REST Api’s
 - Integrating Model Context Protocol (MCP)
 - Automating Visual Tasks using Computer Use
+- Component Collections
 
 ### Module 4 Advanced Copilot Studio Agents
 
 - Autonomous Agents & Triggers
 - Multi-Agent Orchestration: Focused- & Connected Agents
-- Component Collections
 - Use Deep Reasoning models for complex tasks
 - Using Agent Flows to Automate Tasks
 - Adding Voice Support to Agents
