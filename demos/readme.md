@@ -75,7 +75,8 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Autonomous Agents & Triggers
 - Multi-Agent Orchestration: Focused- & Connected Agents
 - Use Deep Reasoning models for complex tasks
-- Using Agent Flows to Automate Tasks
+- Agent Flows and determinisric Task Automation
+- Optimize Agent Flows Savings
 - Adding Voice Support to Agents
 - Integrating Pro-Code Agents
 
