@@ -61,7 +61,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 
 ### Module 3: Extending Copilot Studio Agents Tools
 
-- Prompt Actions,
+- Prompt Actions & Prompt Library
 - AI Builder & Managed Agents: Document Processor
 - Integrate Enterprise data using Connectors
 - Using Dataverse & Integrating Data
