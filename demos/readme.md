@@ -62,9 +62,9 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 ### Module 3: Extending Copilot Studio Agents Tools
 
 - Prompt Actions & Prompt Library
+- Using Dataverse & Integrating Data
 - AI Builder & Managed Agents: Document Processor
 - Integrate Enterprise data using Connectors
-- Using Dataverse & Integrating Data
 - Consuming REST Api’s
 - Integrating Model Context Protocol (MCP)
 - Automating Visual Tasks using Computer Use
