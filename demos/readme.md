@@ -56,7 +56,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Topics, Entities and Variables
 - Conversation Design Best Practices
 - Collecting Information using Adaptive Cards
-- Using Power Fx
+- Understanding & Using Power Fx
 - Publish Agents to Channels (Teams, Charts)
 
 ### Module 3: Extending Copilot Studio Agents Tools
