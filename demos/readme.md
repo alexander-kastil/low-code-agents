@@ -54,21 +54,21 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Creating & Configuring Copilot Studio Agents
 - Mastering Knowledge & Starter Prompts
 - Topics, Entities and Variables
-- Introduction to Power FX
 - Conversation Design Best Practices
 - Collecting Information using Adaptive Cards
+- Using Power Fx
 - Publish Agents to Channels (Teams, Charts)
 
 ### Module 3: Extending Copilot Studio Agents Tools
 
 - Prompt Actions & Prompt Library
-- Using Dataverse & Integrating Data
-- AI Builder & Managed Agents: Document Processor
-- Integrate Enterprise data using Connectors
+- Using Code Interpreter in Prompts
+- Using Dataverse & Enterprise data 
 - Consuming REST Api’s
 - Integrating Model Context Protocol (MCP)
 - Automating Visual Tasks using Computer Use
-- Component Collections
+- Managed Agents: Document Processor
+- organizing tools using Component Collections
 
 ### Module 4 Advanced Copilot Studio Agents
 
@@ -76,6 +76,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Multi-Agent Orchestration: Focused- & Connected Agents
 - Use Deep Reasoning models for complex tasks
 - Agent Flows and determinisric Task Automation
+- Use AI Builder in Flows
 - Testing Agents using evaluations
 - Optimize Agent Flows Savings
 - Adding Voice Support to Agents
