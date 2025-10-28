@@ -68,7 +68,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Integrating Model Context Protocol (MCP)
 - Automating Visual Tasks using Computer Use
 - Managed Agents: Document Processor
-- organizing tools using Component Collections
+- Organizing tools using Component Collections
 
 ### Module 4 Advanced Copilot Studio Agents
 
