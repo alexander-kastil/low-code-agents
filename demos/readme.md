@@ -76,6 +76,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Multi-Agent Orchestration: Focused- & Connected Agents
 - Use Deep Reasoning models for complex tasks
 - Agent Flows and determinisric Task Automation
+- Testing Agents using evaluations
 - Optimize Agent Flows Savings
 - Adding Voice Support to Agents
 - Integrating Pro-Code Agents
@@ -86,7 +87,6 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Mapping Scenarios to Capabilities
 - Designing Conversation Flows
 - Implementing Business Processes using Multi-Agent Orchestration
-- Agent testing using evaluations
 
 ### Module 6: Publishing & Maintaining Copilot Studio Agents
 
