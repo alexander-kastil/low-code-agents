@@ -1,6 +1,0 @@
-# Name: Sightseeing
-# This knowledge source provides Sighseeing information about differenct cities
-kind: KnowledgeSourceConfiguration
-source:
-  kind: SharePointSearchSource
-  site: https://integrationsonline.sharepoint.com/sites/copilot-demo/Sightseeing
