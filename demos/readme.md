@@ -73,7 +73,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 
 - Autonomous Agents & Triggers
 - Multi-Agent Orchestration: Focused- & Connected Agents
-- Routing Patterns
+- Implementing Routing Patterns
 - Use Deep Reasoning models for complex tasks
 - Agent Flows and determinisric Task Automation
 - Use AI Builder in Flows
