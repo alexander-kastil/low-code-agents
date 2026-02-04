@@ -35,10 +35,9 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 
 ### Module 1: Introduction to Copilot Extensibility & Agents
 
-- Copilot & Agents Overview
-- What is Agentic AI?
 - Introduction to Agents and Copilots for Microsoft 365
 - The Microsoft 365 platform & Copilot for Microsoft 365 Ecosystem
+- Cloud Adaption Framework for Agentic AI
 - Copilot & Copilot Studio Licensing Options (Full vs PAYG)
 - Key Components of an Agent: Knowledge & Tools
 - Prompt Engineering, Semantic Index & RAG
