@@ -88,6 +88,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Mapping Scenarios to Capabilities
 - Designing Conversation Flows
 - Implementing Business Processes using Multi-Agent Orchestration
+- Using Analytics And Insights
 - Troubleshooting and Analyzing Conversations 
 
 ### Module 6: Publishing & Maintaining Copilot Studio Agents
@@ -99,7 +100,6 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Application Lifecycle Management for Copilot Studio Agents
 - Exporting & Importing Agents between Environments
 - Deployment Pipelines & Source Control integration
-- Using Analytics And Insights
 - Copilot Studio Compliance & Security
 - Introduction to Microsoft Purview
 - Preventing Agent Sprawl
