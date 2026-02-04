@@ -74,6 +74,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 
 - Autonomous Agents & Triggers
 - Multi-Agent Orchestration: Focused- & Connected Agents
+- Routing Patterns
 - Use Deep Reasoning models for complex tasks
 - Agent Flows and determinisric Task Automation
 - Use AI Builder in Flows
@@ -88,6 +89,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Mapping Scenarios to Capabilities
 - Designing Conversation Flows
 - Implementing Business Processes using Multi-Agent Orchestration
+- Troubleshooting and Analyzing Conversations 
 
 ### Module 6: Publishing & Maintaining Copilot Studio Agents
 
