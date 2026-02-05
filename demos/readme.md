@@ -62,7 +62,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 
 - Prompt Actions & Prompt Library
 - Using Code Interpreter in Prompts
-- integrating Dataverse 
+- Integrating Dataverse Tables
 - Consuming REST Api’s & Enterprise Data
 - Configure On-Behal-of (OBO) authentication for Connectors
 - Integrating Model Context Protocol (MCP)
