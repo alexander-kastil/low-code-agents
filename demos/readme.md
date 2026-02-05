@@ -83,12 +83,13 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Adding Voice Support to Agents
 - Integrating Pro-Code Agents
 
-### Module 5: Designing & Implementing Business Process
+### Module 5: Designing & Implementing Business Processes
 
 - Defining Scenarios & Envisioning
 - Mapping Scenarios to Capabilities
 - Designing Conversation Flows
 - Implementing Business Processes using Multi-Agent Orchestration
+- Evaluate Agents & Processes
 - Using Analytics And Insights
 - Troubleshooting and Analyzing Conversations 
 
