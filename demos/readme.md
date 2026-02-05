@@ -90,7 +90,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Designing Conversation Flows
 - Human in the Loop
 - Evaluate Agents & Processes
-- Using Analytics And Insights
+- Analytics And Application Insights
 - Troubleshooting and Analyzing Conversations 
 
 ### Module 6: Publishing & Maintaining Copilot Studio Agents
