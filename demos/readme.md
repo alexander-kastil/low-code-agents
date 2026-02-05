@@ -88,7 +88,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Defining Scenarios & Envisioning
 - Mapping Scenarios to Capabilities
 - Designing Conversation Flows
-- Implementing Business Processes using Multi-Agent Orchestration
+- Human in the Loop
 - Evaluate Agents & Processes
 - Using Analytics And Insights
 - Troubleshooting and Analyzing Conversations 
