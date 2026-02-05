@@ -64,7 +64,7 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Using Code Interpreter in Prompts
 - Integrating Dataverse Tables
 - Consuming REST Api’s & Enterprise Data
-- Configure On-Behal-of (OBO) authentication for Connectors
+- Entra ID & On-Behal-of (OBO) Authentication
 - Integrating Model Context Protocol (MCP)
 - Automating Visual Tasks using Computer Use
 - Managed Agents: Document Processor
