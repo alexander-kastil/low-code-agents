@@ -1,12 +1,52 @@
 {
   "servers": {
-    "m365agentstoolkit": {
+    "playwright": {
       "command": "npx",
       "args": [
-        "@microsoft/m365agentstoolkit-mcp@latest",
+        "@playwright/mcp@latest",
+        "--vision"
+      ],
+      "type": "stdio"
+    },
+    "azure-devops": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure-devops/mcp",
+        "${input:azure_devops_org}"
+      ],
+      "type": "stdio"
+    },
+    "azure-deploy": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure/mcp@latest",
         "server",
         "start"
+      ],
+      "type": "stdio"
+    },
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "workiq": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@microsoft/workiq",
+        "mcp"
       ]
-    }
-  }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ],
+      "type": "stdio"
+    },
+  },
+  "inputs": []
 }
