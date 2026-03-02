@@ -1,25 +1,8 @@
 # Designing, Implementing & Maintaining Low-Code Agents using Copilot Studio
 
-Microsoft 365 Agents Toolkit (formerly Teams Toolkit) has been rebranded, and users may still use either name.
-
-Use this mapping to know the current vs. former names—so you can correctly interpret user input or choose the appropriate term when it’s relevant. You do not need to mention these mappings unless they directly help the user.
-
-| New name                                                       | Former name                                    | Note                                                     |
-| -------------------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------- |
-| Microsoft 365 Agents Toolkit                                   | Teams Toolkit                                  | Product name.                                            |
-| App Manifest                                                   | Teams app manifest                             | Describes app capabilities.                              |
-| Microsoft 365 Agents Playground                                | Test Tool                                      | Test Environment.                                        |
-| `m365agents.yml`                                               | `teamsapp.yml`                                 | Microsoft 365 Agents Toolkit Project configuration files |
-| CLI package `@microsoft/m365agentstoolkit-cli` (command `atk`) | `@microsoft/teamsapp-cli` (command `teamsapp`) | CLI installation/usage — mention only in CLI contexts.   |
-
-> **Rephrase guidance:**
->
-> - Use the new names by default.
-> - Explain the rebranding briefly if it helps the user’s understanding.
-
 # General Repository Instructions
 
-This repository provides low-code and code-first solutions for designing, implementing, and maintaining intelligent agents using Copilot Studio and Microsoft 365 Agents Toolkit.
+This repository provides low-code and code-first solutions for designing, implementing, and maintaining intelligent agents using **Copilot Studio** (and **Agent Builder** for lightweight scenarios) for agent design, with **Microsoft 365 Agents Toolkit** for code-first development and integrations.
 
 ## Key Principles
 
@@ -39,35 +22,47 @@ This repository provides low-code and code-first solutions for designing, implem
   - Custom connectors for Microsoft 365
 - **`infra/`**: Infrastructure as Code (Bicep) for Azure deployment.
 
-## Building Agents with Copilot Studio
+## Building Agents with Copilot Studio & Agent Builder
 
-### Design Phase
+### Design Phase (Low-Code)
 
-- Start with agent intent and brief definition in your manifest or design document.
-- Map required capabilities to available plugins or custom connectors.
-- Plan conversation flows and error scenarios.
-- Document agent triggers and invocation patterns.
+- Use **Copilot Studio** or **Agent Builder** to design agents with a visual, low-code interface.
+- Define agent intent, capabilities, and knowledge sources.
+- Configure conversation flows and escalation paths.
+- Map required plugins and integrations without code.
 
-### Implementation Phase
+### Implementation Phase (Code-First)
 
-- Use the **Microsoft 365 Agents Playground** to test agents in isolated environment.
-- Create or extend MCP servers for backend integrations.
-- Implement custom connectors for Microsoft 365 and external APIs.
+- Create or extend **MCP (Model Context Protocol) servers** for backend logic and integrations.
+- Implement **custom connectors** for Microsoft 365 and external APIs.
+- Use **Microsoft 365 Agents Toolkit** for scaffolding Teams apps and advanced extensibility.
+- Deploy agents through Copilot Studio or Agent Builder with MCP server backends.
 - Cache OpenAPI schemas and frequently accessed data for performance.
 
 ### Maintenance & Monitoring
 
 - Monitor agent performance using Application Insights.
-- Version agent definitions alongside code changes.
+- Version agent definitions and code changes together.
 - Update agent capabilities when underlying services change.
-- Maintain backward compatibility in agent APIs.
+- Maintain backward compatibility in agent APIs and MCP interfaces.
 
 ## Tool Usage Guidelines
 
-- Use **Microsoft 365 Agents Toolkit CLI** (command: `atk`) for local development and testing.
+### Low-Code Agent Design
+
+- Use **Copilot Studio** for full-featured agent design with AI orchestration, complex flows, and knowledge management.
+- Use **Agent Builder** (Copilot Studio Light) for simple, policy-driven agent scenarios requiring minimal setup.
+
+### Code-First Development
+
+- Use **Microsoft 365 Agents Toolkit CLI** (command: `atk`) for scaffolding Teams apps and building agent infrastructure.
+- Create and manage **MCP servers** to extend agent capabilities with backend logic and integrations.
 - Configuration is managed via `m365agents.yml` (never check secrets into source control).
-- Leverage **declarative agents** for simple, policy-driven scenarios.
-- Use **custom engine agents** for complex multi-turn conversations requiring state management.
+
+### Agent Patterns
+
+- Leverage **declarative agents** in Copilot Studio for predefined, policy-driven scenarios.
+- Use **custom engine agents** in Copilot Studio for complex multi-turn conversations requiring dynamic state management.
 
 # Instructions for Copilot
 

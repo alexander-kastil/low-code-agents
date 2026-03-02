@@ -18,9 +18,7 @@ This repository contains the content for the Developing Low-Code and Pro-Code Ag
 ## Getting Started
 
 - Create a [Github User Account](https://github.com/)
-- Ensure a [Microsoft 365 Developer Tenant](https://developer.microsoft.com/en-us/microsoft-365/dev-program) - optional
-- Set up a [Microsoft 365 developer subscription](https://docs.microsoft.com/en-us/office/developer-program/microsoft-365-developer-program-get-started) - optional
-- Run on [Codespaces or Dev Container](./.devcontainer/readme.md)
+- Ensure a [Copilot Studio Subscription](https://copilotstudio.microsoft.com/)
 
 ## Contributing
 
