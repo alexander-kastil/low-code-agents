@@ -33,21 +33,33 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 
 ## Modules
 
-### Module 1: Introduction to Copilot Extensibility & Agents
+### Module 1: Introduction to Microsoft Copilot & AI Agents
 
+- Copilot & Agents Overview
 - Introduction to Agents and Copilots for Microsoft 365
 - The Microsoft 365 platform & Copilot for Microsoft 365 Ecosystem
-- Cloud Adaption Framework for Agentic AI
 - Copilot & Copilot Studio Licensing Options (Full vs PAYG)
+- What is Agentic AI?
 - Key Components of an Agent: Knowledge & Tools
 - Prompt Engineering, Semantic Index & RAG
 - Tools & Model Context Protocol (MCP)
 - Microsoft Copilot Extensibility Fundamentals
+- Choose a Copilot Extensibility Development path
 - Envisioning Planning & Scenarios
-- Productivity & No Code Agents (SharePoint, Agent Builder)
 - Tools & Environment Configuration
 
-### Module 2: Copilot Studio Basics
+### Module 2: Copilot Chat, Productivity Agents & Microsoft Frontier
+
+- Microsoft Frontier Program Overview
+- Introduction to Copilot Chat
+- Memory & Schedules Prompts
+- Productivity Agents
+- Copilot Studio Light (Agent Builder) for No-Code Agents
+- SharePoint Agents
+- Build Apps with Microsoft 365 Copilot App Builder
+- Implement Workflow using Copilot Workflow
+
+### Module 3: Copilot Studio Basics
 
 - Overview Copilot Studio Agents in Copilot Studio
 - Creating & Configuring Copilot Studio Agents
@@ -58,32 +70,31 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Understanding & Using Power Fx
 - Publish Agents to Channels (Teams, Charts)
 
-### Module 3: Extending Copilot Studio Agents Tools
+### Module 4: Extending Copilot Studio Agents Tools
 
 - Prompt Actions & Prompt Library
 - Using Code Interpreter in Prompts
 - Integrating Dataverse Tables
 - Consuming REST Api’s & Enterprise Data
-- Entra ID & On-Behal-of (OBO) Authentication
 - Integrating Model Context Protocol (MCP)
 - Automating Visual Tasks using Computer Use
 - Managed Agents: Document Processor
 - Organizing tools using Component Collections
 
-### Module 4 Advanced Copilot Studio Agents
+### Module 5: Advanced Copilot Studio Agents
 
 - Autonomous Agents & Triggers
 - Multi-Agent Orchestration: Focused- & Connected Agents
 - Implementing Routing Patterns
 - Use Deep Reasoning models for complex tasks
-- Agent Flows and determinisric Task Automation
+- Agent Flows and deterministic Task Automation
 - Use AI Builder in Flows
 - Testing Agents using evaluations
 - Optimize Agent Flows Savings
 - Adding Voice Support to Agents
 - Integrating Pro-Code Agents
 
-### Module 5: Designing & Implementing Business Processes
+### Module 6: Designing & Implementing Business Processes
 
 - Defining Scenarios & Envisioning
 - Mapping Scenarios to Capabilities
@@ -91,9 +102,9 @@ By the end of this course, you’ll have a comprehensive, practical understandin
 - Human in the Loop
 - Evaluate Agents & Processes
 - Analytics And Application Insights
-- Troubleshooting and Analyzing Conversations 
+- Troubleshooting and Analyzing Conversations
 
-### Module 6: Publishing & Maintaining Copilot Studio Agents
+### Module 7: Publishing & Maintaining Copilot Studio Agents
 
 - PowerPlatform Admin Center & Architecture
 - Introduction to Power Platform Environments & Solutions

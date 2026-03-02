@@ -1,27 +1,9 @@
-# Extend Microsoft Copilot for Microsoft 365 with Copilot Studio
+# Microsoft Frontier Labs
 
-- [Copilot Studio Basics](./01-basics/)
-- [Copilot Studio Advanced](./02-advanced/)
-- [Copilot Studio Tools](./03-tools/)
+> Note: The Microsoft Frontier Features are only available for users with a Microsoft Copilot license that have been granted access to the Microsoft Frontier program.
 
-> Note: If you are already familiar with these labs or you need more examples you can also complete the [Maker Path at Copilot Developer Camp](https://microsoft.github.io/copilot-camp/pages/make/copilot-studio/).
+[Get started using Researcher with Computer Use in Microsoft 365 Copilot](https://support.microsoft.com/en-us/topic/get-started-using-researcher-with-computer-use-in-microsoft-365-copilot-frontier-1f274537-6648-46e8-8264-052a49b92af4)
 
-## Additional Learning Paths
+[Build apps with Microsoft 365 Copilot App Builder](https://support.microsoft.com/en-us/topic/build-apps-with-microsoft-365-copilot-frontier-a50c7eb7-ed36-45b5-baa4-b24e70f3b550)
 
-[Create and extend custom copilots in Microsoft Copilot Studio](https://learn.microsoft.com/en-us/training/paths/extend-microsoft-copilot-microsoft-365-copilot-studio/)
-
-[Create agents in Microsoft Copilot Studio](https://learn.microsoft.com/en-us/training/paths/create-extend-custom-copilots-microsoft-copilot-studio/)
-
-[Create and publish agents with Microsoft Copilot Studio](https://learn.microsoft.com/en-us/training/paths/work-power-virtual-agents/)
-
-[Create agents with Microsoft Copilot Studio - Online Workshop](https://learn.microsoft.com/en-us/training/paths/power-virtual-agents-workshop/)
-
-[Extend Microsoft 365 Copilot in Copilot Studio](https://learn.microsoft.com/en-us/training/paths/extend-microsoft-365-copilot-studio/)
-
-[Extend and manage Microsoft Copilot Studio agents](https://learn.microsoft.com/en-us/training/paths/power-virtual-agents-enhance/)
-
-[Microsoft Applied Skills: Create agents in Microsoft Copilot Studio](https://learn.microsoft.com/en-us/credentials/applied-skills/create-agents-in-microsoft-copilot-studio)
-
-[Agent in a day - Online workshop](https://learn.microsoft.com/en-us/training/paths/agents-online-workshop/)
-
-[Create apps, copilots, flows, and more with Microsoft Dataverse and Teams](https://learn.microsoft.com/en-us/training/paths/work-power-platform-teams/)
+[Get started with Workflows in Microsoft 365 Copilot](https://support.microsoft.com/en-us/topic/get-started-with-workflows-in-microsoft-365-copilot-frontier-8c6aba25-db31-443d-8319-bc79747b280a)
