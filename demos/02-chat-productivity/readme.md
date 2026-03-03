@@ -8,3 +8,7 @@
 - SharePoint Agents
 - Build Apps with Microsoft 365 Copilot App Builder
 - Implement Workflow using Copilot Workflow
+
+## Links & Resources
+
+[Microsoft Frontier Program](https://adoption.microsoft.com/en-us/copilot/frontier-program/)

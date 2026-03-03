@@ -12,11 +12,6 @@
 - Choose a Copilot Extensibility Development path
 - Envisioning Planning & Scenarios
 
-- Productivity & No Code Agents (SharePoint, Agent Builder)
-- Build Apps with Microsoft 365 Copilot App Builder
-- Implement Workflow using Copilot Workflow
-- Tools & Environment Configuration
-
 ## Links & Resources
 
 [Microsoft 365 Copilot](https://learn.microsoft.com/en-us/copilot/microsoft-365/)
