@@ -1,0 +1,50 @@
+# Name: Book Trip
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName:
+    triggerQueries:
+      - book a trip
+      - plan my vacation
+      - help me book travel
+      - I want to book a flight
+      - arrange a trip for me
+      - reserve travel tickets
+      - schedule my next trip
+      - organize a holiday for me
+      - start booking my journey
+      - help me plan a getaway
+
+  actions:
+    - kind: Question
+      id: Question_be3G1o
+      variable: Topic.Sight
+      prompt: What is the name of the place you want to visit?
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: Question_DYfdrA
+      variable: Topic.Date
+      prompt: What date would you like to book your trip for?
+      entity: DatePrebuiltEntity
+
+    - kind: Question
+      id: Question_ABBSRr
+      variable: Topic.NumberOfPax
+      prompt: How many people will be going on this trip?
+      entity: NumberPrebuiltEntity
+
+    - kind: SendActivity
+      id: SendActivity_1KkSkT
+      activity: |-
+        Thank you! Here is your trip summary:
+        - Sight: {Topic.Sight}
+        - Date: {Topic.Date}
+        - Number of people: {Topic.NumberOfPax}
+
+        Your booking request has been received. We will contact you soon with more details.
+
+inputType: {}
+outputType: {}

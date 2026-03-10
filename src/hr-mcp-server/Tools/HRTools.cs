@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using ModelContextProtocol.Server;
 using HRMCPServer.Services;
 
@@ -8,45 +7,45 @@ namespace HRMCPServer;
 
 /// <summary>
 /// Provides HR management tools for the MCP server.
-/// Loads candidate data from a JSON file on startup and maintains it in memory.
+/// Loads employee data from persistent storage and keeps it in sync during runtime.
 /// All modifications are temporary and reset when the server restarts.
 /// </summary>
 [McpServerToolType]
 internal class HRTools
 {
-    private readonly ICandidateService _candidateService;
+    private readonly IEmployeeService _employeeService;
     private readonly ILogger<HRTools> _logger;
 
     public HRTools(
-        ICandidateService candidateService,
+        IEmployeeService employeeService,
         ILogger<HRTools> logger)
     {
-        _candidateService = candidateService ?? throw new ArgumentNullException(nameof(candidateService));
+        _employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [McpServerTool]
-    [Description("Provides the whole list of the candidates")]
-    public async Task<CandidateCollection> ListCandidates()
+    [Description("Provides the whole list of employees")]
+    public async Task<EmployeeCollection> ListEmployees()
     {
-        var candidates = await _candidateService.GetAllCandidatesAsync();
-        return new CandidateCollection 
-        { 
-            Candidates = candidates 
+        var employees = await _employeeService.GetAllEmployeesAsync();
+        return new EmployeeCollection
+        {
+            Employees = employees
         };
     }
 
     [McpServerTool]
-    [Description("Adds a new candidate to the list")]
-    public async Task<string> AddCandidate(
-        [Description("First name of the candidate")] string firstName,
-        [Description("Last name of the candidate")] string lastName,
-        [Description("Email address of the candidate")] string email,
-        [Description("Current role of the candidate")] string currentRole,
+    [Description("Adds a new employee to the list")]
+    public async Task<string> AddEmployee(
+        [Description("First name of the employee")] string firstName,
+        [Description("Last name of the employee")] string lastName,
+        [Description("Email address of the employee")] string email,
+        [Description("Current role of the employee")] string currentRole,
         [Description("Comma-separated list of spoken languages")] string spokenLanguages = "",
         [Description("Comma-separated list of skills")] string skills = "")
     {
-        var candidate = new Candidate
+        var employee = new Employee
         {
             FirstName = firstName?.Trim() ?? string.Empty,
             LastName = lastName?.Trim() ?? string.Empty,
@@ -56,82 +55,80 @@ internal class HRTools
             Skills = ParseCommaSeparatedString(skills)
         };
 
-        var success = await _candidateService.AddCandidateAsync(candidate);
-        
+        var success = await _employeeService.AddEmployeeAsync(employee);
+
         if (!success)
         {
-            return $"Candidate with email '{candidate.Email}' already exists.";
+            return $"Employee with email '{employee.Email}' already exists.";
         }
-        
-        return $"Successfully added candidate: {candidate.FullName}";
+
+        return $"Successfully added employee: {employee.FullName}";
     }
 
     [McpServerTool]
-    [Description("Updates an existing candidate by email")]
-    public async Task<string> UpdateCandidate(
-        [Description("Email address of the candidate to update")] string email,
+    [Description("Updates an existing employee by email")]
+    public async Task<string> UpdateEmployee(
+        [Description("Email address of the employee to update")] string email,
         [Description("New first name (optional)")] string? firstName = null,
         [Description("New last name (optional)")] string? lastName = null,
         [Description("New current role (optional)")] string? currentRole = null,
         [Description("New comma-separated list of spoken languages (optional)")] string? spokenLanguages = null,
         [Description("New comma-separated list of skills (optional)")] string? skills = null)
     {
-        var success = await _candidateService.UpdateCandidateAsync(email, candidate =>
+        var success = await _employeeService.UpdateEmployeeAsync(email, employee =>
         {
-            // Update fields if provided
             if (!string.IsNullOrWhiteSpace(firstName))
-                candidate.FirstName = firstName.Trim();
-            
+                employee.FirstName = firstName.Trim();
+
             if (!string.IsNullOrWhiteSpace(lastName))
-                candidate.LastName = lastName.Trim();
-            
+                employee.LastName = lastName.Trim();
+
             if (!string.IsNullOrWhiteSpace(currentRole))
-                candidate.CurrentRole = currentRole.Trim();
-            
+                employee.CurrentRole = currentRole.Trim();
+
             if (spokenLanguages != null)
-                candidate.SpokenLanguages = ParseCommaSeparatedString(spokenLanguages);
-            
+                employee.SpokenLanguages = ParseCommaSeparatedString(spokenLanguages);
+
             if (skills != null)
-                candidate.Skills = ParseCommaSeparatedString(skills);
+                employee.Skills = ParseCommaSeparatedString(skills);
         });
 
         if (!success)
         {
-            return $"Candidate with email '{email}' not found.";
+            return $"Employee with email '{email}' not found.";
         }
-        
-        return $"Successfully updated candidate with email: {email}";
+
+        return $"Successfully updated employee with email: {email}";
     }
 
     [McpServerTool]
-    [Description("Removes a candidate by email")]
-    public async Task<string> RemoveCandidate(
-        [Description("Email address of the candidate to remove")] string email)
+    [Description("Removes an employee by email")]
+    public async Task<string> RemoveEmployee(
+        [Description("Email address of the employee to remove")] string email)
     {
-        var success = await _candidateService.RemoveCandidateAsync(email);
+        var success = await _employeeService.RemoveEmployeeAsync(email);
 
         if (!success)
         {
-            return $"Candidate with email '{email}' not found.";
+            return $"Employee with email '{email}' not found.";
         }
-        
-        return $"Successfully removed candidate with email: {email}";
+
+        return $"Successfully removed employee with email: {email}";
     }
 
     [McpServerTool]
-    [Description("Searches for candidates by name, email, skills, or current role")]
-    public async Task<CandidateCollection> SearchCandidates(
-        [Description("Search term to find in candidate data")] string searchTerm)
+    [Description("Searches for employees by name, email, skills, or current role")]
+    public async Task<EmployeeCollection> SearchEmployees(
+        [Description("Search term to find in employee data")] string searchTerm)
     {
-        var matchingCandidates = await _candidateService.SearchCandidatesAsync(searchTerm);
-        
-        return new CandidateCollection 
-        { 
-            Candidates = matchingCandidates 
+        var matchingEmployees = await _employeeService.SearchEmployeesAsync(searchTerm);
+
+        return new EmployeeCollection
+        {
+            Employees = matchingEmployees
         };
     }
 
-    // Private helper methods
     private static List<string> ParseCommaSeparatedString(string? input)
     {
         if (string.IsNullOrWhiteSpace(input))

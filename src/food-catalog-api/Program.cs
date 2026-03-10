@@ -1,18 +1,13 @@
 using System;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using FoodApi;
 using FoodApp;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,22 +16,8 @@ IConfiguration Configuration = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(Configuration);
 var cfg = Configuration.Get<FoodConfig>();
 
-// App insights using Feature Flag
-if (cfg.FeatureManagement.UseApplicationInsights)
-{
-    builder.Services.AddApplicationInsightsTelemetry(options =>
-    {
-        if (!string.IsNullOrWhiteSpace(cfg.ApplicationInsights?.ConnectionString))
-        {
-            options.ConnectionString = cfg.ApplicationInsights.ConnectionString;
-        }
-    });
-    builder.Services.AddSingleton<AILogger>();
-}
-
 //Database
 var connectionString = cfg.ConnectionStrings?.DefaultDatabase;
-
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
@@ -44,21 +25,17 @@ if (string.IsNullOrWhiteSpace(connectionString))
 }
 
 builder.Services.AddDbContext<FoodDBContext>(options => options.UseSqlServer(connectionString));
-
-//Microsoft Identity auth
-var az = Configuration.GetSection("Azure");
-
 builder.Services.AddControllers();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food-Catalog-Api", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food-Inventory", Version = "v1" });
 });
 
 // Cors
-builder.Services.AddCors(o => o.AddPolicy("nocors", builder =>
+builder.Services.AddCors(o => o.AddPolicy("NoCORS", builder =>
 {
     builder
         .SetIsOriginAllowed(host => true)
@@ -68,6 +45,23 @@ builder.Services.AddCors(o => o.AddPolicy("nocors", builder =>
 }));
 
 var app = builder.Build();
+
+// Ensure database exists and seed baseline data on startup.
+using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<FoodDBContext>();
+        // Use raw SQL to create the Food table if missing (works even when migrations are absent).
+        DatabaseInitializer.EnsureSchema(db);
+        FoodSeeder.SeedIfEmpty(db, cfg.App?.ImgBaseUrl ?? string.Empty);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Failed to ensure database and seed data.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -79,12 +73,12 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Food-Api");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", cfg.App.Title);
     c.RoutePrefix = string.Empty;
 });
 
 //Cors and Routing
-app.UseCors("nocors");
+app.UseCors("NoCORS");
 
 app.MapControllers();
 app.Run();

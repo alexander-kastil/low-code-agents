@@ -29,7 +29,7 @@ WORKDIR /app
 # Copy the published application from the publish stage
 COPY --from=publish /app/publish .
 
-# Create the Data directory and copy the candidates data
+# Create the Data directory and copy the employees data
 RUN mkdir -p /app/Data
 COPY --from=publish /app/publish/Data/ /app/Data/
 

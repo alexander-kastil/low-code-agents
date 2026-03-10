@@ -1,0 +1,20 @@
+# Name: Microsoft Teams - Post message in a chat or channel
+kind: TaskDialog
+modelDisplayName: Post message in a chat or channel
+modelDescription: Posts a message to a chat or a channel
+outputs:
+  - propertyName: conversationId
+
+  - propertyName: id
+
+  - propertyName: messageLink
+
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: copilots_header_8b576.shared_teams.shared-teams-3bd188ed-6ae7-4282-a241-f906b75f630e
+  connectionProperties:
+    mode: Invoker
+
+  operationId: PostMessageToConversation
+
+outputMode: All

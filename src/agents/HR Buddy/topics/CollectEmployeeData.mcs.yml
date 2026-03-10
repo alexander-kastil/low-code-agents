@@ -1,0 +1,75 @@
+# Name: Collect Employee Data
+kind: AdaptiveDialog
+modelDescription: "This tool can handle queries like these: add employee information, collect employee data, query for paid leave available"
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - add employee information
+      - collect employee data
+      - enter staff details
+      - register new employee
+      - employee onboarding form
+      - submit worker info
+      - input team member data
+      - gather personnel details
+      - record employee profile
+
+  actions:
+    - kind: Question
+      id: Question_w0mGCo
+      variable: Topic.FirstName
+      prompt: What is your first name?
+      entity: PersonNamePrebuiltEntity
+
+    - kind: Question
+      id: Question_GeOVef
+      variable: Topic.LastName
+      prompt: What is your last name?
+      entity: PersonNamePrebuiltEntity
+
+    - kind: Question
+      id: Question_KDHVpq
+      variable: Topic.Department
+      prompt: What is your Department?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          items:
+            - id: Marketing
+              displayName: Marketing
+
+            - id: Software Engineering
+              displayName: Software Engineering
+
+            - id: Accounting
+              displayName: Accounting
+
+        displayName: EmbeddedEntity-Zg3m3Y
+
+    - kind: Question
+      id: question_o1LSLJ
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.CostCenter
+      prompt: What is yourcost center
+      entity: NumberPrebuiltEntity
+
+    - kind: SendActivity
+      id: SendActivity_f1jV9V
+      activity: Hi {Topic.FirstName} {Topic.LastName}. You have 25 days of paid leave left
+
+    - kind: SetVariable
+      id: setVariable_B9DbqS
+      variable: Global.EmplyeeIdentified
+      value: true
+
+inputType: {}
+outputType:
+  properties:
+    CostCenter:
+      displayName: CostCenter
+      type: Number

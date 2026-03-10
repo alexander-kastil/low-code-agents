@@ -1,0 +1,75 @@
+﻿{
+  "properties": {
+    "connectionReferences": {
+      "shared_teams": {
+        "api": {
+          "name": "shared_teams"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedteams_4a4b4"
+        },
+        "runtimeSource": "invoker"
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "description": "Please enter your input",
+                  "title": "Post Text",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Post_message_in_a_chat_or_channel": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "poster": "User",
+              "location": "Channel",
+              "body/recipient/groupId": "9c07913d-b504-4571-a451-28cb721a4ef5",
+              "body/recipient/channelId": "19:6Ivu331rZb46kxuKCQvw2O94gnq_gPF7ryoBsUBnIEo1@thread.tacv2",
+              "body/messageBody": "\u003Cp class=\u0022editor-paragraph\u0022\u003E@{triggerBody()?[\u0027text\u0027]}\u003C/p\u003E"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams",
+              "operationId": "PostMessageToConversation",
+              "connectionName": "shared_teams"
+            }
+          },
+          "runAfter": {}
+        }
+      },
+      "outputs": {},
+      "description": "This flow starts by receiving a text input from the user. It then sends a message to a chat or channel, with the message being posted by a bot named \u0022Flow bot.\u0022 The location for posting the message is not specified in the flow. The process involves capturing user input and using it to generate a message that is posted automatically in a communication space."
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,57 @@
+# Name: Get Children Info
+kind: AdaptiveDialog
+modelDescription: "This tool can handle queries like these: get children info, show me my children's information, children details, list my kids, view child profiles, i have a new child"
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - get children info
+      - show me my children's information
+      - children details
+      - list my kids
+      - view child profiles
+      - see information about my children
+      - display kids' info
+      - what are my children's details?
+      - child info lookup
+      - retrieve children data
+
+  actions:
+    - kind: Question
+      id: Question_lrXB2I
+      variable: Topic.childName
+      prompt: What is the name of the child?
+      entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: Question_p0BF1R
+      variable: Topic.BirthYear
+      prompt: What is the birth year of the child?
+      entity: NumberPrebuiltEntity
+
+    - kind: Question
+      id: Question_CwXcy7
+      variable: Topic.Gender
+      prompt: What is the gender of the child?
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          optionSetName: GenderOptions
+          items:
+            - id: male
+              displayName: Male
+
+            - id: female
+              displayName: Female
+
+            - id: Divers
+              displayName: Divers
+
+    - kind: SendActivity
+      id: sendActivity_teshz4
+      activity: You have a child with name {Topic.childName}
+
+inputType: {}
+outputType: {}

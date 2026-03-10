@@ -1,0 +1,29 @@
+# Name: Post conversation
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - post conversation
+      - what happens after our chat
+      - next steps after this conversation
+      - follow up after this chat
+      - end of conversation options
+      - what can I do after we finish talking
+      - actions after the conversation
+      - wrap up this chat
+      - how to proceed after chatting
+
+  actions:
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_1DeFdt
+      input:
+        binding:
+          text: Conversation
+
+      output: {}
+      flowId: 1c2684b6-77b3-f011-bbd2-7c1e52278fc9
+
+inputType: {}
+outputType: {}

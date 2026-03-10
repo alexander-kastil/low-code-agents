@@ -1,0 +1,15 @@
+# Name: Project Status
+kind: ClosedListEntity
+smartMatchingEnabled: true
+items:
+  - id: ZnR7k0
+    displayName: Draft
+
+  - id: tcWjzW
+    displayName: In Progress
+    synonyms:
+      - Läuft
+      - Running
+
+  - id: HS9aOd
+    displayName: Completed

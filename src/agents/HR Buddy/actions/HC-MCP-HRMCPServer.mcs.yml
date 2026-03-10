@@ -1,0 +1,13 @@
+# Name: HC-MCP - HR MCP Server
+kind: TaskDialog
+modelDisplayName: HR MCP Server
+modelDescription: HR MCP Server
+action:
+  kind: InvokeExternalAgentTaskAction
+  connectionReference: copilots_header_1fcf6.shared_hc-2dmcp-5f0af75e9cbdc7cbac-5f4d6f05a93ca37b7a.85c18d3216bf4227ae76138ad4ff8133
+  connectionProperties:
+    mode: Invoker
+
+  operationDetails:
+    kind: ModelContextProtocolMetadata
+    operationId: InvokeMCP

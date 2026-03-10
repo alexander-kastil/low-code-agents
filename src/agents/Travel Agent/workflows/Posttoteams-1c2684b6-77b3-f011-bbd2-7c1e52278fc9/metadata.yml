@@ -1,0 +1,30 @@
+﻿jsonFileName: workflows/Posttoteams-1c2684b6-77b3-f011-bbd2-7c1e52278fc9/workflow.json
+workflowId: 1c2684b6-77b3-f011-bbd2-7c1e52278fc9
+name: Post to teams
+type: 1
+description: This flow starts by receiving a text input from the user. It then sends a message to a chat or channel, with the message being posted by a bot named "Flow bot." The location for posting the message is not specified in the flow. The process involves capturing user input and using it to generate a message that is posted automatically in a communication space.
+subprocess: false
+category: 5
+mode: 0
+scope: 4
+onDemand: false
+triggerOnCreate: false
+triggerOnDelete: false
+asyncAutodelete: false
+syncWorkflowLogOnFailure: false
+stateCode: 1
+statusCode: 2
+runAs: 1
+isTransacted: true
+introducedVersion: 1.0.0.0
+isCustomizable:
+  value: true
+  canBeChanged: true
+  managedPropertyLogicalName: iscustomizableanddeletable
+businessProcessType: 0
+isCustomProcessingStepAllowedForOtherPublishers:
+  value: true
+  canBeChanged: true
+  managedPropertyLogicalName: canbedeleted
+modernFlowType: 1
+primaryEntity: none

@@ -1,0 +1,100 @@
+# Name: Submit Expense Claim
+# SubmitExpenseClaim
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - submit expense claim
+      - file an expense report
+      - claim expenses
+      - expense reimbursement
+      - report a business expense
+      - turn in receipts for expenses
+      - how do I submit an expense?
+      - start an expense claim
+      - reimburse my expenses
+      - log a new expense
+
+  actions:
+    - kind: AdaptiveCardPrompt
+      id: HwUyv5
+      card: |-
+        {
+          "type": "AdaptiveCard",
+          "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.5",
+          "body": [
+            {
+              "type": "TextBlock",
+              "size": "Medium",
+              "weight": "Bolder",
+              "text": "Submit Travel Expenses"
+            },
+            {
+              "type": "Input.Date",
+              "id": "StartDate",
+              "label": "Start Date"
+            },
+            {
+              "type": "Input.Date",
+              "id": "EndDate",
+              "label": "End Date"
+            },
+            {
+              "type": "Input.Text",
+              "id": "Destination",
+              "placeholder": "Enter destination"
+            },
+            {
+              "type": "Input.Number",
+              "id": "Amount",
+              "placeholder": "Enter amount"
+            },
+            {
+              "type": "Input.Text",
+              "id": "Comment",
+              "placeholder": "Add a comment (optional)",
+              "isMultiline": true
+            }
+          ],
+          "actions": [
+            {
+              "type": "Action.Submit",
+              "title": "Submit"
+            }
+          ]
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          Amount: Topic.Amount
+          Comment: Topic.Comment
+          Destination: Topic.Destination
+          EndDate: Topic.EndDate
+          StartDate: Topic.StartDate
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          Amount: Number
+          Comment: String
+          Destination: String
+          EndDate: Date
+          StartDate: Date
+
+    - kind: ConditionGroup
+      id: conditionGroup_Wtoj2e
+      conditions:
+        - id: conditionItem_ZAGLeP
+          condition: =Topic.Amount <= 100
+          actions:
+            - kind: SendActivity
+              id: sendActivity_C83gjt
+              activity: Your expense claim was submitted for processing
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_m7bSuj
+          activity: Your exprense claim was submitted for approval

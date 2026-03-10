@@ -1,0 +1,5 @@
+﻿connectionReferences:
+  - connectionReferenceLogicalName: copilots_header_8b576.shared_teams.shared-teams-3bd188ed-6ae7-4282-a241-f906b75f630e
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_teams
+  - connectionReferenceLogicalName: copilots_header_8b576.shared_teams.shared-teams-3bd188ed-6ae7-4282-a241-f906b75f630e
+    connectorId: /providers/Microsoft.PowerApps/apis/shared_teams
