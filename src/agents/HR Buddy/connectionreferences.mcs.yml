@@ -1,5 +1,3 @@
 ﻿connectionReferences:
   - connectionReferenceLogicalName: copilots_header_1fcf6.shared_hc-2dmcp-5f0af75e9cbdc7cbac-5f4d6f05a93ca37b7a.85c18d3216bf4227ae76138ad4ff8133
     connectorId: /providers/Microsoft.PowerApps/apis/shared_hc-2dmcp-5f0af75e9cbdc7cbac-5f4d6f05a93ca37b7a
-  - connectionReferenceLogicalName: copilots_header_1fcf6.shared_hc-2dmcp-5f0af75e9cbdc7cbac-5f4d6f05a93ca37b7a.85c18d3216bf4227ae76138ad4ff8133
-    connectorId: /providers/Microsoft.PowerApps/apis/shared_hc-2dmcp-5f0af75e9cbdc7cbac-5f4d6f05a93ca37b7a

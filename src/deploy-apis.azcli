@@ -1,28 +1,41 @@
-env=dev
-grp=m365-copilot-$env
+env=pl7008
+grp=rg-$env
 loc=westeurope
-acct=m365copilot$env
+acct=storage$env
 container=food
+law=pl7008-$env
+appInsights=cs-ai-$env
+foodConStr="Data Source=.;Initial Catalog=FoodCatalogDB;Persist Security Info=True;User ID=copilot;Password='copilot';TrustServerCertificate=true"
+hrConStr="<YOUR_HR_DB_CONNECTION_STRING>"
 
 az group create -n $grp -l $loc
 
-az storage account create -l $loc -n $acct -g $grp --sku Standard_LRS
+az monitor log-analytics workspace create -g $grp -n $law -l $loc 
+lawId=$(az monitor log-analytics workspace show -g $grp -n $law --query id -o tsv)
+az monitor app-insights component create --app $appInsights -g $grp -l $loc --application-type web --workspace $lawId
+
+az storage account create -l $loc -n $acct -g $grp --sku Standard_LRS --allow-blob-public-access true
 key=$(az storage account keys list -n $acct -g $grp --query "[0].value" -o tsv)
-az storage container create -n $container --account-key $key --account-name $acct
+az storage container create -n $container --account-name $acct --account-key $key --public-access blob
 
-az storage blob upload-batch -d $container -s "assets/images" --account-name $acct --account-key $key
+az storage blob upload-batch --destination $container --source assets/images --account-name $acct --account-key $key
 
+# Get Application Insights connection string
+aiConnStr=$(az monitor app-insights component show -g $grp -n $appInsights --query connectionString -o tsv)
+
+# Deploy food-catalog-api
 cd food-catalog-api
-az webapp up -n food-catalog-api-$env -g $grp -p copilot-food-plan-$env -l $loc -r "dotnet:9"
-az webapp cors add --allowed-origins "*" --name food-catalog-api-$env --resource-group $grp
+az webapp up -n food-catalog-api-$env -g $grp -p process-food-plan-$env -l $loc -r "dotnet:10"
+az webapp config appsettings set -g $grp -n food-catalog-api-$env --settings \
+  "ConnectionStrings:DefaultDatabase=$foodConStr"
+az webapp cors add --allowed-origins "*" -n food-catalog-api-$env -g $grp
 cd ..
 
+# Deploy hr-mcp-server
 cd hr-mcp-server
-az webapp up -n hr-mcp-server-$env -g $grp -p copilot-hr-plan-$env -l $loc -r "dotnet:9"
-az webapp cors add --allowed-origins "*" --name hr-mcp-server-$env --resource-group $grp
-cd ..
-
-cd purchasing-service
-az webapp up -n purchasing-service-$env -g $grp -p copilot-purchasing-plan-$env -l $loc -r "dotnet:9"
-az webapp cors add --allowed-origins "*" --name purchasing-service-$env --resource-group $grp
+az webapp up -n human-resource-mcp-$env -g $grp -p human-resource-plan-$env -l $loc -r "dotnet:10"
+az webapp config appsettings set -g $grp -n human-resource-mcp-$env --settings \
+  "APPLICATIONINSIGHTS_CONNECTION_STRING=$aiConnStr" \
+  "ConnectionStrings:DefaultDatabase=$hrConStr"
+az webapp cors add --allowed-origins "*" -n human-resource-mcp-$env -g $grp
 cd ..

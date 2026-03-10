@@ -5,39 +5,39 @@ using System.Text.Json.Serialization;
 namespace HRMCPServer;
 
 /// <summary>
-/// Represents a candidate in the HR system
+/// Represents an employee in the HR system.
 /// </summary>
-public class Candidate
+public class Employee
 {
     [JsonIgnore]
     public int Id { get; set; }
 
     /// <summary>
-    /// The candidate's first name
+    /// The employee's first name.
     /// </summary>
     [JsonPropertyName("firstname")]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
-    /// The candidate's last name
+    /// The employee's last name.
     /// </summary>
     [JsonPropertyName("lastname")]
     public string LastName { get; set; } = string.Empty;
 
     /// <summary>
-    /// The candidate's email address
+    /// The employee's email address.
     /// </summary>
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// Persisted representation of spoken languages
+    /// Persisted representation of spoken languages.
     /// </summary>
     [JsonIgnore]
     public string SpokenLanguagesData { get; set; } = "[]";
 
     /// <summary>
-    /// List of languages the candidate speaks
+    /// List of languages the employee speaks.
     /// </summary>
     [NotMapped]
     [JsonPropertyName("spoken_languages")]
@@ -48,13 +48,13 @@ public class Candidate
     }
 
     /// <summary>
-    /// Persisted representation of candidate skills
+    /// Persisted representation of employee skills.
     /// </summary>
     [JsonIgnore]
     public string SkillsData { get; set; } = "[]";
 
     /// <summary>
-    /// List of the candidate's skills
+    /// List of the employee's skills.
     /// </summary>
     [NotMapped]
     [JsonPropertyName("skills")]
@@ -65,13 +65,13 @@ public class Candidate
     }
 
     /// <summary>
-    /// The candidate's current role
+    /// The employee's current role.
     /// </summary>
     [JsonPropertyName("current_role")]
     public string CurrentRole { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets the candidate's full name
+    /// Gets the employee's full name.
     /// </summary>
     public string FullName => $"{FirstName} {LastName}";
 
@@ -100,13 +100,13 @@ public class Candidate
 }
 
 /// <summary>
-/// Container for a collection of candidates
+/// Container for a collection of employees.
 /// </summary>
-public class CandidateCollection
+public class EmployeeCollection
 {
     /// <summary>
-    /// List of candidates
+    /// List of employees.
     /// </summary>
-    public List<Candidate> Candidates { get; set; } = new();
+    public List<Employee> Employees { get; set; } = new();
 }
 

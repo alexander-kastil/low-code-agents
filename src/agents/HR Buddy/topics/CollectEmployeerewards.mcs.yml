@@ -17,10 +17,20 @@ beginDialog:
       - employee perks redemption
 
   actions:
+    - kind: ConditionGroup
+      id: ConditionGroup_checkEmployeeIdentified
+      conditions:
+        - id: ConditionItem_employeeNotIdentified
+          condition: =Not(Global.EmplyeeIdentified)
+          actions:
+            - kind: BeginDialog
+              id: BeginDialog_collectEmployeeData
+              dialog: CollectEmployeeData
+
     - kind: Question
       id: Question_L1omP9
       variable: Topic.RewardChoice
-      prompt: "Please choose your reward:"
+      prompt: 'Please choose your reward:'
       entity:
         kind: EmbeddedEntity
         definition:
