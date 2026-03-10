@@ -1,6 +1,6 @@
 {
   "swagger": "2.0",
-  "host": "food-catalog-api-dev.azurewebsites.net",
+  "host": "food-catalog-api-copilot.azurewebsites.net",
   "schemes": [
     "https"
   ],

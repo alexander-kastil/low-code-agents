@@ -1,50 +1,51 @@
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 using FoodApp;
+using FoodApp.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace FoodApi
 {
+#nullable enable
     [Route("[controller]")]
     [ApiController]
     public class FoodController : ControllerBase
     {
-        public FoodController(FoodDBContext context, IConfiguration config)
+        private readonly IFoodCatalogService _foodService;
+        private readonly FoodConfig _cfg;
+
+        public FoodController(IFoodCatalogService foodService, IConfiguration config)
         {
-            ctx = context;
-            cfg = config.Get<FoodConfig>();
+            _foodService = foodService;
+            _cfg = config.Get<FoodConfig>();
         }
 
-        FoodDBContext ctx;
-        FoodConfig cfg;
-
         [HttpGet()]
-        public IEnumerable<FoodItem> GetFood()
+        public async Task<IEnumerable<FoodItem>> GetFood()
         {
-            return ctx.Food.ToArray();
+            return await _foodService.GetAllFoodItemsAsync();
         }
 
         [HttpGet("byname")]
-        public ActionResult<IEnumerable<FoodItem>> GetFoodByName([FromQuery] string name)
+        public async Task<ActionResult<IEnumerable<FoodItem>>> GetFoodByName([FromQuery] string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return BadRequest("Name parameter is required.");
-            var items = ctx.Food.Where(f => f.Name.Contains(name)).ToList();
+            var items = await _foodService.GetFoodItemsByNameAsync(name);
             if (items.Count == 0)
                 return NotFound();
             return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public FoodItem GetById(int id)
+        public async Task<FoodItem?> GetById(int id)
         {
-            return ctx.Food.FirstOrDefault(v => v.ID == id);
+            return await _foodService.GetFoodItemByIdAsync(id);
         }
 
         [HttpPost()]
-        public FoodItem InsertFood(FoodDTO item)
+        public async Task<FoodItem> InsertFood(FoodDTO item)
         {
             var foodItem = new FoodItem
             {
@@ -54,41 +55,32 @@ namespace FoodApi
                 PictureUrl = item.PictureUrl,
                 Description = item.Description
             };
-            ctx.Food.Add(foodItem);
-            ctx.SaveChanges();
-            return foodItem;
+            return await _foodService.AddFoodItemAsync(foodItem);
         }
 
         [HttpPut()]
-        public FoodItem UpdateFood(FoodItem item)
+        public async Task<FoodItem> UpdateFood(FoodItem item)
         {
-            ctx.Food.Attach(item);
-            ctx.Entry(item).State = EntityState.Modified;
-            ctx.SaveChanges();
+            await _foodService.UpdateFoodItemAsync(item);
             return item;
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var item = GetById(id);
-            if (item != null)
-            {
-                ctx.Remove(item);
-                ctx.SaveChanges();
-            }
+            await _foodService.DeleteFoodItemAsync(id);
             return Ok();
         }
 
         [HttpPatch("{id}/update-stock")]
-        public ActionResult<FoodItem> UpdateInStock(int id, [FromQuery] int amount)
+        public async Task<ActionResult<FoodItem>> UpdateInStock(int id, [FromQuery] int amount)
         {
-            var item = ctx.Food.FirstOrDefault(f => f.ID == id);
+            var item = await _foodService.GetFoodItemByIdAsync(id);
             if (item == null)
                 return NotFound();
-            item.InStock += amount;
-            ctx.SaveChanges();
+            await _foodService.UpdateFoodItemStockAsync(id, amount);
             return Ok(item);
         }
     }
+#nullable restore
 }

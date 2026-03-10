@@ -1,0 +1,9 @@
+{
+    "mcpServers": {
+        "food-catalog-mcp": {
+            "type": "streamable-http",
+            "url": "http://localhost:5094/api/mcp",
+            "note": "Local Food Catalog MCP Server"
+        }
+    }
+}

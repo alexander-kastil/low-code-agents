@@ -1,6 +1,7 @@
 using System;
 using FoodApi;
 using FoodApp;
+using FoodApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,13 @@ if (string.IsNullOrWhiteSpace(connectionString))
 }
 
 builder.Services.AddDbContext<FoodDBContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IFoodCatalogService, FoodCatalogService>();
 builder.Services.AddControllers();
+
+// MCP Server – exposes food catalog operations as tools at /api/mcp
+builder.Services.AddMcpServer()
+    .WithHttpTransport()
+    .WithToolsFromAssembly();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -81,4 +88,8 @@ app.UseSwaggerUI(c =>
 app.UseCors("NoCORS");
 
 app.MapControllers();
+
+// MCP endpoint
+app.MapMcp("/api/mcp");
+
 app.Run();
