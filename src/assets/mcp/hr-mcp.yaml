@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
   title: HR MCP Server
-  description: Allows to manage candidates for specific job roles providing tools to list, search, add, update, and remove candidates from a reference list
+  description: Allows to manage employees for specific job roles providing tools to list, search, add, update, and remove employees from a reference list
   version: 1.0.0
-host: hr-mcp-server-dev.azurewebsites.net
+host: human-resource-mcp-pl7008.azurewebsites.net
 basePath: /
 schemes:
   - https

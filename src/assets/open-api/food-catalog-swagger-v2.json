@@ -1,6 +1,6 @@
 {
   "swagger": "2.0",
-  "host": "food-catalog-api-copilot.azurewebsites.net",
+  "host": "food-catalog-api-pl7008.azurewebsites.net",
   "schemes": [
     "https"
   ],
@@ -31,9 +31,6 @@
         "pictureUrl": {
           "type": "string"
         },
-        "code": {
-          "type": "string"
-        },
         "description": {
           "type": "string"
         }
@@ -53,8 +50,6 @@
     "description": "An Api that allows interaction with food items"
   },
   "paths": {
-    "/Config": {},
-    "/Config/getAllEnv": {},
     "/Food": {
       "post": {
         "tags": [
@@ -91,7 +86,10 @@
           "openai-enabled": true,
           "operations": [
             {
-              "x-ms-require-user-confirmation": false
+              "operationId": "AddFood",
+              "x-ms-require-user-confirmation": false,
+              "summary": "Add food",
+              "description": "Add food"
             }
           ]
         },
@@ -123,7 +121,10 @@
           "openai-enabled": true,
           "operations": [
             {
-              "x-ms-require-user-confirmation": false
+              "operationId": "GetFood",
+              "x-ms-require-user-confirmation": false,
+              "summary": "Gets all food",
+              "description": "Gets all food"
             }
           ]
         },
@@ -166,13 +167,68 @@
           "openai-enabled": true,
           "operations": [
             {
-              "x-ms-require-user-confirmation": false
+              "operationId": "UpdateFood",
+              "x-ms-require-user-confirmation": false,
+              "summary": "UpdateFood",
+              "description": "UpdateFood"
             }
           ]
         },
         "summary": "UpdateFood",
         "description": "UpdateFood",
         "operationId": "UpdateFood"
+      }
+    },
+    "/Food/byname": {
+      "get": {
+        "tags": [
+          "Food"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string",
+            "description": "Name to search for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FoodItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "x-ms-openai-data": {
+          "openai-enabled": true,
+          "operations": [
+            {
+              "operationId": "GetFoodByName",
+              "x-ms-require-user-confirmation": false,
+              "summary": "Search food by name",
+              "description": "Search food items by name"
+            }
+          ]
+        },
+        "summary": "Search food by name",
+        "description": "Search food items by name",
+        "operationId": "GetFoodByName"
       }
     },
     "/Food/{id}": {
@@ -206,13 +262,108 @@
           "openai-enabled": true,
           "operations": [
             {
-              "x-ms-require-user-confirmation": false
+              "operationId": "GetFoodByID",
+              "x-ms-require-user-confirmation": false,
+              "summary": "GetFoodByID",
+              "description": "GetFoodByID"
             }
           ]
         },
         "summary": "GetFoodByID",
         "description": "GetFoodByID",
         "operationId": "GetFoodByID"
+      },
+      "delete": {
+        "tags": [
+          "Food"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-ms-openai-data": {
+          "openai-enabled": true,
+          "operations": [
+            {
+              "operationId": "DeleteFood",
+              "x-ms-require-user-confirmation": true,
+              "summary": "Delete food item",
+              "description": "Delete a food item by ID"
+            }
+          ]
+        },
+        "summary": "Delete food item",
+        "description": "Delete a food item by ID",
+        "operationId": "DeleteFood"
+      }
+    },
+    "/Food/{id}/update-stock": {
+      "patch": {
+        "tags": [
+          "Food"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "amount",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "Amount to add or subtract from stock"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FoodItem"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "x-ms-openai-data": {
+          "openai-enabled": true,
+          "operations": [
+            {
+              "operationId": "UpdateInStock",
+              "x-ms-require-user-confirmation": false,
+              "summary": "Update food stock quantity",
+              "description": "Update the in-stock quantity of a food item"
+            }
+          ]
+        },
+        "summary": "Update food stock quantity",
+        "description": "Update the in-stock quantity of a food item",
+        "operationId": "UpdateInStock"
       }
     }
   },
