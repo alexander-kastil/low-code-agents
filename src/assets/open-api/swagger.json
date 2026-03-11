@@ -4,99 +4,19 @@
   "schemes": [
     "https"
   ],
-  "definitions": {
-    "FoodItem": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "format": "int32",
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "price": {
-          "format": "double",
-          "type": "number"
-        },
-        "inStock": {
-          "format": "int32",
-          "type": "integer"
-        },
-        "minStock": {
-          "format": "int32",
-          "type": "integer",
-          "description": "Minimum amount to keep in stock"
-        },
-        "pictureUrl": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    }
-  },
-  "x-ms-openai-manifest": {
-    "humanName": "Food-Catalog-Api",
-    "modelDescription": "An Api that allows interaction with food items",
-    "contactEmail": "",
-    "legalUrl": ""
-  },
   "info": {
     "title": "Food-Catalog-Api",
     "version": "v1",
-    "description": "An Api that allows interaction with food items"
+    "description": "An API that allows interaction with food items."
+  },
+  "x-ms-openai-manifest": {
+    "humanName": "Food-Catalog-Api",
+    "modelDescription": "An API that allows interaction with food items.",
+    "contactEmail": "",
+    "legalUrl": ""
   },
   "paths": {
     "/Food": {
-      "post": {
-        "tags": [
-          "Food"
-        ],
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/*+json"
-        ],
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/FoodItem"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/FoodItem"
-            }
-          }
-        },
-        "x-ms-openai-data": {
-          "openai-enabled": true,
-          "operations": [
-            {
-              "operationId": "AddFood",
-              "x-ms-require-user-confirmation": false,
-              "summary": "Add food",
-              "description": "Add food"
-            }
-          ]
-        },
-        "summary": "Add food",
-        "description": "Add food",
-        "operationId": "AddFood"
-      },
       "get": {
         "tags": [
           "Food"
@@ -123,14 +43,62 @@
             {
               "operationId": "GetFood",
               "x-ms-require-user-confirmation": false,
-              "summary": "Gets all food",
-              "description": "Gets all food"
+              "summary": "Get all food items",
+              "description": "Get all food items in the catalog."
             }
           ]
         },
-        "summary": "Gets all food",
-        "description": "Gets all food",
+        "summary": "Get all food items",
+        "description": "Get all food items in the catalog.",
         "operationId": "GetFood"
+      },
+      "post": {
+        "tags": [
+          "Food"
+        ],
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FoodDTO"
+            },
+            "description": "The food item to create."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FoodItem"
+            }
+          }
+        },
+        "x-ms-openai-data": {
+          "openai-enabled": true,
+          "operations": [
+            {
+              "operationId": "AddFood",
+              "x-ms-require-user-confirmation": false,
+              "summary": "Add a food item",
+              "description": "Create a new food item in the catalog."
+            }
+          ]
+        },
+        "summary": "Add a food item",
+        "description": "Create a new food item in the catalog.",
+        "operationId": "AddFood"
       },
       "put": {
         "tags": [
@@ -150,9 +118,11 @@
           {
             "in": "body",
             "name": "body",
+            "required": true,
             "schema": {
               "$ref": "#/definitions/FoodItem"
-            }
+            },
+            "description": "The food item to update."
           }
         ],
         "responses": {
@@ -169,13 +139,13 @@
             {
               "operationId": "UpdateFood",
               "x-ms-require-user-confirmation": false,
-              "summary": "UpdateFood",
-              "description": "UpdateFood"
+              "summary": "Update a food item",
+              "description": "Update an existing food item in the catalog."
             }
           ]
         },
-        "summary": "UpdateFood",
-        "description": "UpdateFood",
+        "summary": "Update a food item",
+        "description": "Update an existing food item in the catalog.",
         "operationId": "UpdateFood"
       }
     },
@@ -195,7 +165,7 @@
             "name": "name",
             "required": true,
             "type": "string",
-            "description": "Name to search for"
+            "description": "The food name to search for."
           }
         ],
         "responses": {
@@ -222,12 +192,12 @@
               "operationId": "GetFoodByName",
               "x-ms-require-user-confirmation": false,
               "summary": "Search food by name",
-              "description": "Search food items by name"
+              "description": "Find food items whose name matches the supplied value."
             }
           ]
         },
         "summary": "Search food by name",
-        "description": "Search food items by name",
+        "description": "Find food items whose name matches the supplied value.",
         "operationId": "GetFoodByName"
       }
     },
@@ -247,7 +217,8 @@
             "name": "id",
             "required": true,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "The food item ID."
           }
         ],
         "responses": {
@@ -264,13 +235,13 @@
             {
               "operationId": "GetFoodByID",
               "x-ms-require-user-confirmation": false,
-              "summary": "GetFoodByID",
-              "description": "GetFoodByID"
+              "summary": "Get a food item by ID",
+              "description": "Retrieve a single food item by its ID."
             }
           ]
         },
-        "summary": "GetFoodByID",
-        "description": "GetFoodByID",
+        "summary": "Get a food item by ID",
+        "description": "Retrieve a single food item by its ID.",
         "operationId": "GetFoodByID"
       },
       "delete": {
@@ -288,7 +259,8 @@
             "name": "id",
             "required": true,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "The food item ID."
           }
         ],
         "responses": {
@@ -302,13 +274,13 @@
             {
               "operationId": "DeleteFood",
               "x-ms-require-user-confirmation": true,
-              "summary": "Delete food item",
-              "description": "Delete a food item by ID"
+              "summary": "Delete a food item",
+              "description": "Delete a food item by its ID."
             }
           ]
         },
-        "summary": "Delete food item",
-        "description": "Delete a food item by ID",
+        "summary": "Delete a food item",
+        "description": "Delete a food item by its ID.",
         "operationId": "DeleteFood"
       }
     },
@@ -328,7 +300,8 @@
             "name": "id",
             "required": true,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "The food item ID."
           },
           {
             "in": "query",
@@ -336,7 +309,7 @@
             "required": true,
             "type": "integer",
             "format": "int32",
-            "description": "Amount to add or subtract from stock"
+            "description": "The amount to add to or subtract from stock."
           }
         ],
         "responses": {
@@ -357,15 +330,80 @@
               "operationId": "UpdateInStock",
               "x-ms-require-user-confirmation": false,
               "summary": "Update food stock quantity",
-              "description": "Update the in-stock quantity of a food item"
+              "description": "Increase or decrease the current stock quantity for a food item."
             }
           ]
         },
         "summary": "Update food stock quantity",
-        "description": "Update the in-stock quantity of a food item",
+        "description": "Increase or decrease the current stock quantity for a food item.",
         "operationId": "UpdateInStock"
       }
     }
   },
+  "definitions": {
+    "FoodDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "inStock": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minStock": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pictureUrl": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "FoodItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "inStock": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minStock": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pictureUrl": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "tags": [
+    {
+      "name": "Food"
+    }
+  ],
   "securityDefinitions": {}
 }
