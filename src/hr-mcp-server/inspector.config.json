@@ -2,8 +2,8 @@
     "mcpServers": {
         "hr-mcp": {
             "type": "streamable-http",
-            "url": "http://localhost:47002",
-            "note": "Local HR MCP Server running on port 47002"
+            "url": "http://localhost:5010",
+            "note": "Local HR MCP Server running on port 5010"
         },
         "hr-mcp-azure-dev": {
             "type": "streamable-http",

@@ -25,13 +25,15 @@ if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultDatabase' is not configured.");
 }
 
-builder.Services.AddDbContext<FoodDBContext>(options => options.UseSqlServer(connectionString));
+connectionString = SqliteDatabase.ResolveConnectionString(connectionString, builder.Environment.ContentRootPath);
+
+builder.Services.AddDbContext<FoodDBContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddScoped<IFoodCatalogService, FoodCatalogService>();
 builder.Services.AddControllers();
 
 // MCP Server – exposes food catalog operations as tools at /api/mcp
 builder.Services.AddMcpServer()
-    .WithHttpTransport()
+    .WithHttpTransport(options => options.Stateless = true)
     .WithToolsFromAssembly();
 
 // Swagger

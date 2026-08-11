@@ -6,7 +6,8 @@ The Food Catalog API is a .NET 9 minimal Web API that exposes CRUD endpoints for
 
 ## Architecture at a glance
 
-- **Entry point (`Program.cs`)** – wires up configuration binding (`FoodConfig`), dependency injection, Entity Framework Core SQL Server provider, Swagger/OpenAPI, CORS, authentication/authorization, and optional Application Insights telemetry.
+- **Entry point (`Program.cs`)** – wires up configuration binding (`FoodConfig`), dependency injection, the Entity Framework Core SQLite provider, Swagger/OpenAPI, CORS, authentication/authorization, and optional Application Insights telemetry.
+- **Database location (`Database/SqliteDatabase.cs`)** – resolves the `Data Source` file name from `ConnectionStrings:DefaultDatabase` into a writable folder: `App_Data/` next to the app locally, `/home/data/` on Azure App Service so the file survives restarts and redeployments.
 - **Controllers**
   - `FoodController` – RESTful CRUD endpoints for `FoodItem` entities. Publishes placeholder events when `FeatureManagement.PublishEvents` is enabled.
   - `ConfigController` – diagnostic endpoints that expose the bound configuration and environment variables (development use only).

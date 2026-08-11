@@ -25,9 +25,9 @@ devtunnel create hr-mcp -a --host-header unchanged
 
 ### 3. Create a Port Mapping
 ```bash
-devtunnel port create hr-mcp -p 47002
+devtunnel port create hr-mcp -p 5010
 ```
-**What it does:** Creates a port mapping for the `hr-mcp` tunnel, forwarding traffic to local port `47002` where the HR MCP Server is running.
+**What it does:** Creates a port mapping for the `hr-mcp` tunnel, forwarding traffic to local port `5010` where the HR MCP Server is running.
 
 ### 4. Start the Tunnel
 ```bash
@@ -35,5 +35,5 @@ devtunnel host hr-mcp
 ```
 **What it does:** Starts hosting the `hr-mcp` tunnel, making your local application accessible via a public URL. This command will display the public URL that you can use to access your HR MCP Server from anywhere.
 
-> **Note:** Keep the terminal window with `devtunnel host hr-mcp` open while you need the tunnel active. Make sure your HR MCP Server is running on port 47002 before starting the tunnel.
+> **Note:** Keep the terminal window with `devtunnel host hr-mcp` open while you need the tunnel active. Make sure your HR MCP Server is running on port 5010 before starting the tunnel.
 

@@ -2,8 +2,13 @@
     "mcpServers": {
         "food-catalog-mcp": {
             "type": "streamable-http",
-            "url": "http://localhost:5094/api/mcp",
-            "note": "Local Food Catalog MCP Server"
+            "url": "http://localhost:5000/api/mcp",
+            "note": "Local Food Catalog MCP Server (catalog_api launch profile)"
+        },
+        "food-catalog-mcp-azure-dev": {
+            "type": "streamable-http",
+            "url": "https://food-catalog-api.azurewebsites.net/api/mcp",
+            "note": "Dev deployment hosted on Azure App Service (rg-cowork-copilot-studio)"
         }
     }
 }

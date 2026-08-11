@@ -1,11 +1,29 @@
 ---
-name: create-cowork-skill
-description: Authors a Microsoft 365 Copilot Cowork custom skill (a SKILL.md plus its companion files) that Cowork reliably discovers and runs. Covers the frontmatter contract, the kebab-case name-matches-folder rule, OneDrive placement, companion-file limits, and the run-and-tune loop that makes a skill trigger on natural phrasing. Use when asked to create a cowork skill, author a custom skill for Cowork, write a SKILL.md for Copilot, build a Copilot Cowork skill, package a skill for upload, or fix a Cowork skill that will not load or will not trigger.
+name: copilot-cowork
+description: Router for Cowork work, both authoring a custom skill and running Cowork as standing infrastructure. Covers the Microsoft 365 Copilot Cowork skill contract (frontmatter, kebab-case name-matches-folder, OneDrive placement, companion files, the run-and-tune loop) and the product-agnostic operating loop (scheduled morning briefing, manual production block, scheduled end-of-day wrap-up, reusable task templates, weekly refinement). Read the ONE matching reference. Use when asked to create or fix a cowork skill, write a SKILL.md for Copilot, package a skill for upload, a skill will not load or will not trigger, or to automate the day, build a morning briefing or end-of-day report, schedule a recurring session, write a task template, or work out why an automation stopped being useful.
 metadata:
-  version: 1.0.0
+  version: 2.0.0
 ---
 
-# Create a Cowork Skill
+# Cowork
+
+Two jobs live here: **authoring** a Microsoft 365 Copilot Cowork custom skill, and **operating**
+Cowork as recurring infrastructure rather than a chat window.
+
+| Ask | Read |
+| --- | --- |
+| The frontmatter contract, size and count limits, companion-file rules, the three-layer loading model, cross-platform compatibility | `references/format-reference.md` |
+| Writing a description that triggers, structuring the instruction body, evidence and refusal rules, the run-and-pressure-test loop | `references/authoring-and-tuning.md` |
+| The recurring daily loop (briefing, production block, wrap-up), task templates, the gates before scheduling anything, keeping it useful over time | `references/daily-loop.md` |
+
+The authoring half below is **Microsoft 365 Copilot Cowork** specific. The operating loop in
+`daily-loop.md` holds for Claude Cowork as well, which shares the name and almost nothing else.
+
+Related: `schedule` and `loop` for the same recurring idea inside Claude Code, `obsidian` when the
+outputs land in a vault, `claude-orchestration` when one session needs to fan out across agents
+instead of repeating on a schedule.
+
+## Authoring a Copilot Cowork skill
 
 Author a Microsoft 365 Copilot Cowork custom skill: a `SKILL.md` file with YAML frontmatter and plain-language instructions, plus any companion files it needs.
 
@@ -80,6 +98,7 @@ Read the reference file that matches the task:
 
 - `references/format-reference.md` — the full frontmatter contract, size and count limits, companion-file rules and validation table, the three-layer loading model, and cross-platform compatibility with Claude Code and other Agent Skills hosts.
 - `references/authoring-and-tuning.md` — how to write a description that triggers, how to structure the instruction body, evidence and refusal rules, and the run-and-pressure-test loop.
+- `references/daily-loop.md` — the three-session operating loop, task templates, the gates before anything gets scheduled, and the weekly refinement pass.
 
 ---
 

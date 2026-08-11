@@ -18,7 +18,7 @@ namespace FoodApi
         public FoodController(IFoodCatalogService foodService, IConfiguration config)
         {
             _foodService = foodService;
-            _cfg = config.Get<FoodConfig>();
+            _cfg = config.Get<FoodConfig>() ?? new FoodConfig();
         }
 
         [HttpGet()]

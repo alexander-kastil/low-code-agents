@@ -40,12 +40,10 @@ public class EmployeeDbContext : DbContext
             .HasMaxLength(200);
 
         employeeEntity.Property(c => c.SpokenLanguagesData)
-            .IsRequired()
-            .HasColumnType("nvarchar(max)");
+            .IsRequired();
 
         employeeEntity.Property(c => c.SkillsData)
-            .IsRequired()
-            .HasColumnType("nvarchar(max)");
+            .IsRequired();
 
         var shiftEntity = modelBuilder.Entity<ShiftAssignment>();
 

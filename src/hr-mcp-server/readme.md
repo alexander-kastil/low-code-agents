@@ -15,7 +15,7 @@ dotnet run
 npx @modelcontextprotocol/inspector --config inspector.config.json --server hr-mcp
 ```
 
-The config at `inspector.config.json` tells the inspector to use the HR MCP server's Streamable HTTP base URL `http://localhost:47002`, matching the endpoint that `app.MapMcp()` exposes. This satisfies the newer CLI requirement that `--server` reference an entry in a config file.
+The config at `inspector.config.json` tells the inspector to use the HR MCP server's Streamable HTTP base URL `http://localhost:5010`, matching the endpoint that `app.MapMcp()` exposes. This satisfies the newer CLI requirement that `--server` reference an entry in a config file.
 
 #### Remote (Azure) deployment
 
@@ -23,7 +23,11 @@ The config at `inspector.config.json` tells the inspector to use the HR MCP serv
 npx @modelcontextprotocol/inspector --config inspector.config.json --server hr-mcp-azure-dev
 ```
 
-This reuses the same inspector config but selects the `hr-mcp-azure-dev` entry, which points at `https://hr-mcp-server-copilot.azurewebsites.net`. Make sure the Azure app is running and reachable before launching the inspector.
+This reuses the same inspector config but selects the `hr-mcp-azure-dev` entry, which points at `https://human-resource-mcp.azurewebsites.net`. Make sure the Azure app is running and reachable before launching the inspector.
+
+### Where the data lives
+
+The server stores employees and shift assignments in a SQLite file taken from `ConnectionStrings:EmployeeDatabase`. `Data/SqliteDatabase.cs` places that file in `App_Data/` beside the app when you run locally, and in `/home/data/` on Azure App Service, which is the persistent share that survives restarts and redeployments. `EmployeeDbInitializer` creates the schema and seeds the eight demo employees on first start, so no migration step is needed.
 
 > **Heads-up:** Updating `inspector.config.json` is a local workflow change only—you don't need to republish the Azure App Service after editing this file. Republish the .NET app itself only when the server code or configuration that lives in the deployed artifact changes.
 
