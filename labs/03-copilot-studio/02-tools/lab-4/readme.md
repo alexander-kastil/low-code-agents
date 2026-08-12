@@ -304,7 +304,7 @@ If you cannot run Azure Functions or a dev tunnel, there is a REST API already d
 https://food-catalog-api.azurewebsites.net
 ```
 
-The service publishes an OpenAPI 3.0 document at `/swagger/v1/swagger.json`, which custom connectors do not accept. Import [`src/assets/food-api-swagger.json`](../../../../src/assets/food-api-swagger.json) instead: it is the Swagger 2.0 equivalent, prepared the same way as `hr-service-swagger.json`. It exposes a Food Inventory catalog:
+The service publishes an OpenAPI 3.0 document at `/openapi/v1.json` and renders it with Scalar at the site root, but custom connectors do not accept OpenAPI 3.0. Import [`src/assets/food-api-swagger.json`](../../../../src/assets/food-api-swagger.json) instead: it is the Swagger 2.0 equivalent, prepared the same way as `hr-service-swagger.json`. It exposes a Food Inventory catalog:
 
 | Method | Route |
 | --- | --- |

@@ -5,7 +5,6 @@ beginDialog:
   kind: OnRecognizedIntent
   id: main
   intent:
-    displayName:
     triggerQueries:
       - protein info
       - tell me about protein

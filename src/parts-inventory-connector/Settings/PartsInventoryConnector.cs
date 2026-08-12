@@ -10,7 +10,7 @@ public class Settings
 
     public static Settings LoadSettings()
     {
-        // Load settings
+
         IConfiguration config = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

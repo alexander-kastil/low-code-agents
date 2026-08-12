@@ -37,7 +37,7 @@ The four rules in short:
 - Internal links use relative paths (e.g. `demos/01-intro/readme.md`); anchors use `#heading-name`.
 - Code fences must declare a language (`bash`, `python`, `json`, …).
 - If a quality check fails, fix the underlying issue. Do not bypass with `--no-verify`.
-- Write clean code with no noise: no inline comments, no explanatory remarks, no placeholder notes.
+- **ZERO COMMENTS IN CODE UNDER `src/`. NO EXCEPTIONS.** Never write a comment, and delete any you encounter while editing a file. This covers every form: `//` line comments, `/* */` blocks, `///` and `/** */` XML doc comments, `#` comments in scripts, JSDoc, banner or section-divider comments, `TODO`/`FIXME`/`HACK` notes, commented-out code, and "explanation" lines above a method. The code must read without them; if a line needs explaining, rename it or extract it instead. Prose explanations belong in `readme.md`, never in a source file.
 - No error handling in scripts unless explicitly requested.
 
 ## Workflow Orchestration

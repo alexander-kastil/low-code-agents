@@ -9,10 +9,7 @@ instructions: |-
   Your respond in a friendly and professional manner
 aISettings:
   model:
-    kind: PreviewModels
-    modelNameHint: GPT41
+    modelNameHint: GPT5Chat
 
   extensionData:
     lastUsedCustomModel: {}
-
-declarativeSkillsMetadata:

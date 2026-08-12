@@ -4,28 +4,18 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using FoodApi;
 using FoodApp.Services;
-using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 
 namespace FoodCatalogMcp
 {
     [McpServerToolType]
-    internal class FoodCatalogTools
+    internal class FoodCatalogTools(IFoodCatalogService foodService)
     {
-        private readonly IFoodCatalogService _foodService;
-        private readonly ILogger<FoodCatalogTools> _logger;
-
-        public FoodCatalogTools(IFoodCatalogService foodService, ILogger<FoodCatalogTools> logger)
-        {
-            _foodService = foodService;
-            _logger = logger;
-        }
-
         [McpServerTool]
         [Description("Returns the full list of food items in the catalog")]
         public async Task<List<FoodItem>> GetAllFoodItems()
         {
-            return await _foodService.GetAllFoodItemsAsync();
+            return await foodService.GetAllFoodItemsAsync();
         }
 
         [McpServerTool]
@@ -33,7 +23,7 @@ namespace FoodCatalogMcp
         public async Task<List<FoodItem>> GetFoodItemsByName(
             [Description("Name or partial name to search for")] string name)
         {
-            return await _foodService.GetFoodItemsByNameAsync(name);
+            return await foodService.GetFoodItemsByNameAsync(name);
         }
 
         [McpServerTool]
@@ -41,7 +31,7 @@ namespace FoodCatalogMcp
         public async Task<FoodItem?> GetFoodItemById(
             [Description("The numeric ID of the food item")] int id)
         {
-            return await _foodService.GetFoodItemByIdAsync(id);
+            return await foodService.GetFoodItemByIdAsync(id);
         }
 
         [McpServerTool]
@@ -63,7 +53,7 @@ namespace FoodCatalogMcp
                 PictureUrl = pictureUrl,
                 Description = description
             };
-            return await _foodService.AddFoodItemAsync(item);
+            return await foodService.AddFoodItemAsync(item);
         }
 
         [McpServerTool]
@@ -77,7 +67,7 @@ namespace FoodCatalogMcp
             [Description("New picture URL (optional)")] string? pictureUrl = null,
             [Description("New description (optional)")] string? description = null)
         {
-            var item = await _foodService.GetFoodItemByIdAsync(id);
+            var item = await foodService.GetFoodItemByIdAsync(id);
             if (item == null)
                 return $"Food item with ID {id} was not found.";
 
@@ -88,7 +78,7 @@ namespace FoodCatalogMcp
             if (pictureUrl != null) item.PictureUrl = pictureUrl;
             if (description != null) item.Description = description;
 
-            await _foodService.UpdateFoodItemAsync(item);
+            await foodService.UpdateFoodItemAsync(item);
             return $"Food item '{item.Name}' (ID {id}) updated successfully.";
         }
 
@@ -97,11 +87,11 @@ namespace FoodCatalogMcp
         public async Task<string> DeleteFoodItem(
             [Description("ID of the food item to delete")] int id)
         {
-            var item = await _foodService.GetFoodItemByIdAsync(id);
+            var item = await foodService.GetFoodItemByIdAsync(id);
             if (item == null)
                 return $"Food item with ID {id} was not found.";
 
-            await _foodService.DeleteFoodItemAsync(id);
+            await foodService.DeleteFoodItemAsync(id);
             return $"Food item '{item.Name}' (ID {id}) deleted successfully.";
         }
 
@@ -111,11 +101,11 @@ namespace FoodCatalogMcp
             [Description("ID of the food item")] int id,
             [Description("Amount to add (positive) or subtract (negative) from current stock")] int amount)
         {
-            var item = await _foodService.GetFoodItemByIdAsync(id);
+            var item = await foodService.GetFoodItemByIdAsync(id);
             if (item == null)
                 return $"Food item with ID {id} was not found.";
 
-            await _foodService.UpdateFoodItemStockAsync(id, amount);
+            await foodService.UpdateFoodItemStockAsync(id, amount);
             return $"Stock for '{item.Name}' (ID {id}) updated to {item.InStock + amount}.";
         }
     }

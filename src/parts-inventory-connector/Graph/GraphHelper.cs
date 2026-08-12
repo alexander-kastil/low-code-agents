@@ -11,19 +11,15 @@ public static class GraphHelper
     private static HttpClient? httpClient;
     public static void Initialize(Settings settings)
     {
-        // Create a credential that uses the client credentials
-        // authorization flow
+
         var credential = new ClientSecretCredential(
             settings.TenantId, settings.ClientId, settings.ClientSecret);
 
-        // Create an HTTP client
         httpClient = GraphClientFactory.Create();
 
-        // Create an auth provider
         var authProvider = new AzureIdentityAuthenticationProvider(
             credential, scopes: new[] { "https://graph.microsoft.com/.default" });
 
-        // Create a Graph client using the credential
         graphClient = new GraphServiceClient(httpClient, authProvider);
     }
 
@@ -61,7 +57,7 @@ public static class GraphHelper
         _ = graphClient ?? throw new MemberAccessException("graphClient is null");
         _ = httpClient ?? throw new MemberAccessException("httpClient is null");
         _ = connectionId ?? throw new ArgumentException("connectionId is required");
-        // Use the Graph SDK's request builder to generate the request URL
+
         var requestInfo = graphClient.External
             .Connections[connectionId]
             .Schema
@@ -69,21 +65,18 @@ public static class GraphHelper
 
         requestInfo.SetContentFromParsable(graphClient.RequestAdapter, "application/json", schema);
 
-        // Convert the SDK request to an HttpRequestMessage
         var requestMessage = await graphClient.RequestAdapter
             .ConvertToNativeRequestAsync<HttpRequestMessage>(requestInfo);
         _ = requestMessage ?? throw new Exception("Could not create native HTTP request");
         requestMessage.Method = HttpMethod.Post;
         requestMessage.Headers.Add("Prefer", "respond-async");
 
-        // Send the request
         var responseMessage = await httpClient.SendAsync(requestMessage) ??
             throw new Exception("No response returned from API");
 
         if (responseMessage.IsSuccessStatusCode)
         {
-            // The operation ID is contained in the Location header returned
-            // in the response
+
             var operationId = responseMessage.Headers.Location?.Segments.Last() ??
                 throw new Exception("Could not get operation ID from Location header");
             await WaitForOperationToCompleteAsync(connectionId, operationId);
@@ -115,7 +108,6 @@ public static class GraphHelper
                 throw new ServiceException($"Schema operation failed: {operation?.Error?.Code} {operation?.Error?.Message}");
             }
 
-            // Wait 5 seconds and check again
             await Task.Delay(5000);
         } while (true);
     }

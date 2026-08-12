@@ -3,13 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HRMCPServer.Data;
 
-public class EmployeeDbContext : DbContext
+public class EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : DbContext(options)
 {
-    public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Employee> Employees => Set<Employee>();
     public DbSet<ShiftAssignment> ShiftAssignments => Set<ShiftAssignment>();
 

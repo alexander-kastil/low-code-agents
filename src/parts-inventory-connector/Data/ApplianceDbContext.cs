@@ -13,8 +13,7 @@ public class ApplianceDbContext : DbContext
     {
         if (Database.EnsureCreated() || !Parts.Any())
         {
-            // File was just created (or is empty),
-            // seed with data from CSV file
+
             var parts = CsvDataLoader.LoadPartsFromCsv("ApplianceParts.csv");
             Parts.AddRange(parts);
             SaveChanges();
@@ -28,8 +27,7 @@ public class ApplianceDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // EF Core can't store lists, so add a converter for the Appliances
-        // property to serialize as a JSON string on save to DB
+
         modelBuilder.Entity<AppliancePart>()
             .Property(ap => ap.Appliances)
             .HasConversion(
@@ -37,7 +35,6 @@ public class ApplianceDbContext : DbContext
                 v => JsonSerializer.Deserialize<List<string>>(v, JsonSerializerOptions.Default)
             );
 
-        // Add LastUpdated and IsDeleted shadow properties
         modelBuilder.Entity<AppliancePart>()
             .Property<DateTime>("LastUpdated")
             .HasDefaultValueSql("datetime()")
@@ -47,16 +44,13 @@ public class ApplianceDbContext : DbContext
             .IsRequired()
             .HasDefaultValue(false);
 
-        // Exclude any soft-deleted items (IsDeleted = 1) from
-        // the default query sets
         modelBuilder.Entity<AppliancePart>()
             .HasQueryFilter(a => !EF.Property<bool>(a, "IsDeleted"));
     }
 
     public override int SaveChanges()
     {
-        // Prevent deletes of data, instead mark the item as deleted
-        // by setting IsDeleted = true.
+
         foreach(var entry in ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Deleted))
         {

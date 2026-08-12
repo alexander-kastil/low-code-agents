@@ -3,25 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HRMCPServer.Services;
 
-/// <summary>
-/// Service for managing employee data in memory.
-/// </summary>
-public class EmployeeService : IEmployeeService
+public class EmployeeService(
+    EmployeeDbContext dbContext,
+    ILogger<EmployeeService> logger) : IEmployeeService
 {
-    private readonly EmployeeDbContext _dbContext;
-    private readonly ILogger<EmployeeService> _logger;
-
-    public EmployeeService(
-        EmployeeDbContext dbContext,
-        ILogger<EmployeeService> logger)
-    {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
     public async Task<List<Employee>> GetAllEmployeesAsync()
     {
-        return await _dbContext.Employees
+        return await dbContext.Employees
             .AsNoTracking()
             .OrderBy(c => c.LastName)
             .ThenBy(c => c.FirstName)
@@ -35,17 +23,17 @@ public class EmployeeService : IEmployeeService
 
         var email = employee.Email.Trim();
 
-        if (await _dbContext.Employees.AnyAsync(c => c.Email == email))
+        if (await dbContext.Employees.AnyAsync(c => c.Email == email))
         {
             return false;
         }
 
         employee.Email = email;
 
-        await _dbContext.Employees.AddAsync(employee);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.Employees.AddAsync(employee);
+        await dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Added new employee: {FullName} ({Email})", employee.FullName, employee.Email);
+        logger.LogInformation("Added new employee: {FullName} ({Email})", employee.FullName, employee.Email);
         return true;
     }
 
@@ -59,7 +47,7 @@ public class EmployeeService : IEmployeeService
 
         var normalizedEmail = email.Trim();
 
-        var employee = await _dbContext.Employees
+        var employee = await dbContext.Employees
             .FirstOrDefaultAsync(c => c.Email == normalizedEmail);
 
         if (employee == null)
@@ -68,9 +56,9 @@ public class EmployeeService : IEmployeeService
         }
 
         updateAction(employee);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Updated employee with email: {Email}", normalizedEmail);
+        logger.LogInformation("Updated employee with email: {Email}", normalizedEmail);
         return true;
     }
 
@@ -81,7 +69,7 @@ public class EmployeeService : IEmployeeService
 
         var normalizedEmail = email.Trim();
 
-        var employee = await _dbContext.Employees
+        var employee = await dbContext.Employees
             .FirstOrDefaultAsync(c => c.Email == normalizedEmail);
 
         if (employee == null)
@@ -89,10 +77,10 @@ public class EmployeeService : IEmployeeService
             return false;
         }
 
-        _dbContext.Employees.Remove(employee);
-        await _dbContext.SaveChangesAsync();
+        dbContext.Employees.Remove(employee);
+        await dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Removed employee with email: {Email}", normalizedEmail);
+        logger.LogInformation("Removed employee with email: {Email}", normalizedEmail);
         return true;
     }
 
@@ -105,7 +93,7 @@ public class EmployeeService : IEmployeeService
 
         var searchTermLower = searchTerm.Trim().ToLowerInvariant();
 
-        var employees = await _dbContext.Employees
+        var employees = await dbContext.Employees
             .AsNoTracking()
             .ToListAsync();
 
@@ -128,7 +116,7 @@ public class EmployeeService : IEmployeeService
 
         var nameLower = employeeName.Trim().ToLowerInvariant();
 
-        var employees = await _dbContext.Employees.ToListAsync();
+        var employees = await dbContext.Employees.ToListAsync();
 
         var employee = employees.FirstOrDefault(e =>
             e.FullName.ToLowerInvariant().Contains(nameLower) ||
@@ -147,10 +135,10 @@ public class EmployeeService : IEmployeeService
             ShiftStartHour = shiftStartHour
         };
 
-        await _dbContext.ShiftAssignments.AddAsync(shift);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.ShiftAssignments.AddAsync(shift);
+        await dbContext.SaveChangesAsync();
 
-        _logger.LogInformation("Assigned {EmployeeName} to {Position} on {Date} starting at {Hour}:00",
+        logger.LogInformation("Assigned {EmployeeName} to {Position} on {Date} starting at {Hour}:00",
             employee.FullName, position, date, shiftStartHour);
 
         return shift;

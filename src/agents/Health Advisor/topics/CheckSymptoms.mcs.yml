@@ -44,22 +44,37 @@ beginDialog:
       entity: StringPrebuiltEntity
 
     - kind: InvokeFlowAction
-      id: invokeFlowAction_UHtH96
+      id: invokeFlowAction_EdzBhH
       input:
         binding:
           number: =Topic.Age
-          text: Text(Gender)
+          text: =Text(Topic.Gender)
           text_1: =Topic.UserSymptoms
 
       output:
         binding:
-          summarized_text: Topic.SymptomsSummary
+          outcome: Topic.Outcome
 
       flowId: b78f3625-bf63-f011-bec3-6045bd9415bc
 
     - kind: SendActivity
-      id: sendActivity_vdcDGE
-      activity: "According to out experts this is our advice: {Topic.SymptomsSummary}"
+      id: sendActivity_ACd2R2
+      activity: this is the outcome {Topic.Outcome}
+
+    - kind: ConditionGroup
+      id: conditionGroup_Xr7Kd2
+      conditions:
+        - id: conditionItem_seriousCondition
+          condition: =!("cleared for light work" in Topic.Outcome)
+          actions:
+            - kind: Question
+              id: question_Qm4vTb
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.TookDrugs
+              prompt: _Your condition looks serious. Did you take any drugs or medication?_
+              entity: BooleanPrebuiltEntity
 
 inputType: {}
 outputType: {}

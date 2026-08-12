@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Food Inventory-XX",
-    "description": "Food inventory catalog for a restaurant kitchen. Use this API to list, search, create, update, and delete food items, to read their price, description, picture, and stock levels, and to book stock in or out when goods are delivered or consumed.",
+    "title": "Food Inventory v5",
+    "description": "Read and maintain the food catalog: list all food items, look them up by name or id, add new items, update existing ones, adjust stock levels and delete items.",
     "version": "v1"
   },
   "host": "food-catalog-api.azurewebsites.net",
@@ -19,12 +19,10 @@
   "paths": {
     "/Food": {
       "get": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "ListFoodItems",
         "summary": "List all food items",
-        "description": "Returns every food item in the inventory with its id, name, price, description, picture URL, current stock, and minimum stock level. Use this to show the full catalog or to find items that are running low.",
+        "description": "Returns every food item in the catalog with its price, current stock, minimum stock, picture and description.",
+        "x-ms-visibility": "important",
         "responses": {
           "200": {
             "description": "The complete list of food items.",
@@ -34,21 +32,23 @@
                 "$ref": "#/definitions/FoodItem"
               }
             }
+          },
+          "default": {
+            "description": "The operation failed."
           }
         }
       },
       "post": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "CreateFoodItem",
         "summary": "Create a food item",
-        "description": "Adds a new food item to the inventory. The id is assigned by the service and returned in the response.",
+        "description": "Adds a new food item to the catalog and returns the created item including its generated id.",
+        "x-ms-visibility": "important",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "required": true,
+            "x-ms-summary": "Food item",
             "description": "The food item to create.",
             "schema": {
               "$ref": "#/definitions/FoodDTO"
@@ -57,29 +57,28 @@
         ],
         "responses": {
           "200": {
-            "description": "The created food item, including its new id.",
+            "description": "The created food item.",
             "schema": {
               "$ref": "#/definitions/FoodItem"
             }
           },
-          "400": {
-            "description": "The supplied food item is invalid."
+          "default": {
+            "description": "The operation failed."
           }
         }
       },
       "put": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "UpdateFoodItem",
         "summary": "Update a food item",
-        "description": "Replaces an existing food item. Send the complete item including its id; all fields are overwritten with the values you supply.",
+        "description": "Replaces an existing food item. Supply the full item including its id.",
+        "x-ms-visibility": "important",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "required": true,
-            "description": "The complete food item to store, including its id.",
+            "x-ms-summary": "Food item",
+            "description": "The full food item to store, including its id.",
             "schema": {
               "$ref": "#/definitions/FoodItem"
             }
@@ -92,53 +91,57 @@
               "$ref": "#/definitions/FoodItem"
             }
           },
-          "400": {
-            "description": "The supplied food item is invalid."
-          },
-          "404": {
-            "description": "No food item exists with the supplied id."
+          "default": {
+            "description": "The operation failed."
           }
         }
       }
     },
     "/Food/byname": {
       "get": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "SearchFoodItemsByName",
         "summary": "Search food items by name",
-        "description": "Returns the food items whose name matches the supplied search text. Use this when the user names a dish instead of an id, for example Schnitzel or Germknoedel.",
+        "description": "Returns the food items whose name matches the search text. Use this when the user names a food instead of an id.",
+        "x-ms-visibility": "important",
         "parameters": [
           {
             "name": "name",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "string",
-            "description": "The name or part of the name of the food item to search for, for example Schnitzel."
+            "x-ms-summary": "Name",
+            "description": "The food name to search for, for example Banana.",
+            "x-ms-visibility": "important"
           }
         ],
         "responses": {
           "200": {
-            "description": "The food items matching the search text.",
+            "description": "The matching food items.",
             "schema": {
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FoodItem"
               }
             }
+          },
+          "400": {
+            "description": "The name parameter is missing or empty."
+          },
+          "404": {
+            "description": "No food item matches the given name."
+          },
+          "default": {
+            "description": "The operation failed."
           }
         }
       }
     },
     "/Food/{id}": {
       "get": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "GetFoodItemById",
         "summary": "Get a food item by id",
-        "description": "Returns the single food item with the supplied id, including price, description, picture URL, and stock levels.",
+        "description": "Returns a single food item identified by its numeric id.",
+        "x-ms-visibility": "important",
         "parameters": [
           {
             "name": "id",
@@ -146,7 +149,8 @@
             "required": true,
             "type": "integer",
             "format": "int32",
-            "description": "The unique id of the food item to retrieve."
+            "x-ms-summary": "Food item id",
+            "description": "The numeric id of the food item."
           }
         ],
         "responses": {
@@ -156,18 +160,16 @@
               "$ref": "#/definitions/FoodItem"
             }
           },
-          "404": {
-            "description": "No food item exists with the supplied id."
+          "default": {
+            "description": "The operation failed."
           }
         }
       },
       "delete": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "DeleteFoodItem",
         "summary": "Delete a food item",
-        "description": "Permanently removes the food item with the supplied id from the inventory.",
+        "description": "Permanently removes the food item with the given id from the catalog.",
+        "x-ms-visibility": "advanced",
         "parameters": [
           {
             "name": "id",
@@ -175,27 +177,26 @@
             "required": true,
             "type": "integer",
             "format": "int32",
-            "description": "The unique id of the food item to delete."
+            "x-ms-summary": "Food item id",
+            "description": "The numeric id of the food item to delete."
           }
         ],
         "responses": {
           "200": {
             "description": "The food item was deleted."
           },
-          "404": {
-            "description": "No food item exists with the supplied id."
+          "default": {
+            "description": "The operation failed."
           }
         }
       }
     },
     "/Food/{id}/update-stock": {
       "patch": {
-        "tags": [
-          "Food"
-        ],
         "operationId": "UpdateFoodItemStock",
-        "summary": "Book stock in or out",
-        "description": "Adjusts the stock level of a food item by a relative amount. Use a positive amount to book a delivery in and a negative amount to book consumption out. Returns the food item with its new stock level.",
+        "summary": "Update the stock of a food item",
+        "description": "Sets the current stock level of the food item with the given id and returns the item.",
+        "x-ms-visibility": "important",
         "parameters": [
           {
             "name": "id",
@@ -203,26 +204,32 @@
             "required": true,
             "type": "integer",
             "format": "int32",
-            "description": "The unique id of the food item whose stock is adjusted."
+            "x-ms-summary": "Food item id",
+            "description": "The numeric id of the food item."
           },
           {
             "name": "amount",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "integer",
             "format": "int32",
-            "description": "The relative change to the stock level, for example 10 to add ten units or -3 to remove three units."
+            "x-ms-summary": "Amount",
+            "description": "The new stock level for the food item.",
+            "x-ms-visibility": "important"
           }
         ],
         "responses": {
           "200": {
-            "description": "The food item with its updated stock level.",
+            "description": "The food item with the updated stock level.",
             "schema": {
               "$ref": "#/definitions/FoodItem"
             }
           },
           "404": {
-            "description": "No food item exists with the supplied id."
+            "description": "No food item exists with the given id."
+          },
+          "default": {
+            "description": "The operation failed."
           }
         }
       }
@@ -231,72 +238,94 @@
   "definitions": {
     "FoodDTO": {
       "type": "object",
-      "description": "A new food item to add to the inventory, without an id.",
+      "description": "A new food item without an id.",
+      "required": [
+        "name",
+        "price"
+      ],
       "properties": {
         "name": {
           "type": "string",
-          "description": "The name of the dish, for example Wiener Schnitzel."
+          "x-ms-summary": "Name",
+          "description": "The name of the food item."
         },
         "price": {
           "type": "number",
           "format": "double",
-          "description": "The selling price of the dish in euro."
+          "x-ms-summary": "Price",
+          "description": "The unit price of the food item."
         },
         "inStock": {
           "type": "integer",
           "format": "int32",
-          "description": "The number of units currently available in stock."
+          "x-ms-summary": "In stock",
+          "description": "The number of units currently in stock."
         },
         "minStock": {
           "type": "integer",
           "format": "int32",
-          "description": "The minimum stock level below which the item must be reordered."
+          "x-ms-summary": "Minimum stock",
+          "description": "The stock level below which the item should be reordered."
         },
         "pictureUrl": {
           "type": "string",
-          "description": "The absolute URL of a picture of the dish."
+          "x-ms-summary": "Picture URL",
+          "description": "The absolute URL of the item picture."
         },
         "description": {
           "type": "string",
-          "description": "A short description of the dish."
+          "x-ms-summary": "Description",
+          "description": "A short description of the food item."
         }
       }
     },
     "FoodItem": {
       "type": "object",
-      "description": "A food item stored in the inventory.",
+      "description": "A food item stored in the catalog.",
+      "required": [
+        "id",
+        "name",
+        "price"
+      ],
       "properties": {
         "id": {
           "type": "integer",
           "format": "int32",
-          "description": "The unique id of the food item."
+          "x-ms-summary": "Id",
+          "description": "The unique numeric id of the food item."
         },
         "name": {
           "type": "string",
-          "description": "The name of the dish, for example Wiener Schnitzel."
+          "x-ms-summary": "Name",
+          "description": "The name of the food item."
         },
         "price": {
           "type": "number",
           "format": "double",
-          "description": "The selling price of the dish in euro."
+          "x-ms-summary": "Price",
+          "description": "The unit price of the food item."
         },
         "inStock": {
           "type": "integer",
           "format": "int32",
-          "description": "The number of units currently available in stock."
+          "x-ms-summary": "In stock",
+          "description": "The number of units currently in stock."
         },
         "minStock": {
           "type": "integer",
           "format": "int32",
-          "description": "The minimum stock level below which the item must be reordered."
+          "x-ms-summary": "Minimum stock",
+          "description": "The stock level below which the item should be reordered."
         },
         "pictureUrl": {
           "type": "string",
-          "description": "The absolute URL of a picture of the dish."
+          "x-ms-summary": "Picture URL",
+          "description": "The absolute URL of the item picture."
         },
         "description": {
           "type": "string",
-          "description": "A short description of the dish."
+          "x-ms-summary": "Description",
+          "description": "A short description of the food item."
         }
       }
     }
@@ -304,7 +333,7 @@
   "tags": [
     {
       "name": "Food",
-      "description": "Operations on the food inventory."
+      "description": "Operations on the food catalog."
     }
   ]
 }

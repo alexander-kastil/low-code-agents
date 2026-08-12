@@ -1,34 +1,17 @@
 using System.ComponentModel;
-using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 using HRMCPServer.Services;
 
 namespace HRMCPServer;
 
-/// <summary>
-/// Provides HR management tools for the MCP server.
-/// Loads employee data from persistent storage and keeps it in sync during runtime.
-/// All modifications are temporary and reset when the server restarts.
-/// </summary>
 [McpServerToolType]
-internal class HRTools
+internal class HRTools(IEmployeeService employeeService)
 {
-    private readonly IEmployeeService _employeeService;
-    private readonly ILogger<HRTools> _logger;
-
-    public HRTools(
-        IEmployeeService employeeService,
-        ILogger<HRTools> logger)
-    {
-        _employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
     [McpServerTool]
     [Description("Provides the whole list of employees")]
     public async Task<EmployeeCollection> ListEmployees()
     {
-        var employees = await _employeeService.GetAllEmployeesAsync();
+        var employees = await employeeService.GetAllEmployeesAsync();
         return new EmployeeCollection
         {
             Employees = employees
@@ -55,7 +38,7 @@ internal class HRTools
             Skills = ParseCommaSeparatedString(skills)
         };
 
-        var success = await _employeeService.AddEmployeeAsync(employee);
+        var success = await employeeService.AddEmployeeAsync(employee);
 
         if (!success)
         {
@@ -75,7 +58,7 @@ internal class HRTools
         [Description("New comma-separated list of spoken languages (optional)")] string? spokenLanguages = null,
         [Description("New comma-separated list of skills (optional)")] string? skills = null)
     {
-        var success = await _employeeService.UpdateEmployeeAsync(email, employee =>
+        var success = await employeeService.UpdateEmployeeAsync(email, employee =>
         {
             if (!string.IsNullOrWhiteSpace(firstName))
                 employee.FirstName = firstName.Trim();
@@ -106,7 +89,7 @@ internal class HRTools
     public async Task<string> RemoveEmployee(
         [Description("Email address of the employee to remove")] string email)
     {
-        var success = await _employeeService.RemoveEmployeeAsync(email);
+        var success = await employeeService.RemoveEmployeeAsync(email);
 
         if (!success)
         {
@@ -121,7 +104,7 @@ internal class HRTools
     public async Task<EmployeeCollection> SearchEmployees(
         [Description("Search term to find in employee data")] string searchTerm)
     {
-        var matchingEmployees = await _employeeService.SearchEmployeesAsync(searchTerm);
+        var matchingEmployees = await employeeService.SearchEmployeesAsync(searchTerm);
 
         return new EmployeeCollection
         {
@@ -142,7 +125,7 @@ internal class HRTools
             return $"Invalid date format '{date}'. Please use yyyy-MM-dd.";
         }
 
-        var assignment = await _employeeService.AssignShiftAsync(employeeName, shiftDate, position, shiftStartHour);
+        var assignment = await employeeService.AssignShiftAsync(employeeName, shiftDate, position, shiftStartHour);
 
         if (assignment == null)
         {

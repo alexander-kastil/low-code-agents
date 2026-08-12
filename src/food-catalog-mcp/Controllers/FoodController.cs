@@ -3,28 +3,18 @@ using System.Threading.Tasks;
 using FoodApp;
 using FoodApp.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace FoodApi
 {
 #nullable enable
     [Route("[controller]")]
     [ApiController]
-    public class FoodController : ControllerBase
+    public class FoodController(IFoodCatalogService foodService) : ControllerBase
     {
-        private readonly IFoodCatalogService _foodService;
-        private readonly FoodConfig _cfg;
-
-        public FoodController(IFoodCatalogService foodService, IConfiguration config)
-        {
-            _foodService = foodService;
-            _cfg = config.Get<FoodConfig>() ?? new FoodConfig();
-        }
-
         [HttpGet()]
         public async Task<IEnumerable<FoodItem>> GetFood()
         {
-            return await _foodService.GetAllFoodItemsAsync();
+            return await foodService.GetAllFoodItemsAsync();
         }
 
         [HttpGet("byname")]
@@ -32,7 +22,7 @@ namespace FoodApi
         {
             if (string.IsNullOrWhiteSpace(name))
                 return BadRequest("Name parameter is required.");
-            var items = await _foodService.GetFoodItemsByNameAsync(name);
+            var items = await foodService.GetFoodItemsByNameAsync(name);
             if (items.Count == 0)
                 return NotFound();
             return Ok(items);
@@ -41,7 +31,7 @@ namespace FoodApi
         [HttpGet("{id}")]
         public async Task<FoodItem?> GetById(int id)
         {
-            return await _foodService.GetFoodItemByIdAsync(id);
+            return await foodService.GetFoodItemByIdAsync(id);
         }
 
         [HttpPost()]
@@ -55,30 +45,30 @@ namespace FoodApi
                 PictureUrl = item.PictureUrl,
                 Description = item.Description
             };
-            return await _foodService.AddFoodItemAsync(foodItem);
+            return await foodService.AddFoodItemAsync(foodItem);
         }
 
         [HttpPut()]
         public async Task<FoodItem> UpdateFood(FoodItem item)
         {
-            await _foodService.UpdateFoodItemAsync(item);
+            await foodService.UpdateFoodItemAsync(item);
             return item;
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _foodService.DeleteFoodItemAsync(id);
+            await foodService.DeleteFoodItemAsync(id);
             return Ok();
         }
 
         [HttpPatch("{id}/update-stock")]
         public async Task<ActionResult<FoodItem>> UpdateInStock(int id, [FromQuery] int amount)
         {
-            var item = await _foodService.GetFoodItemByIdAsync(id);
+            var item = await foodService.GetFoodItemByIdAsync(id);
             if (item == null)
                 return NotFound();
-            await _foodService.UpdateFoodItemStockAsync(id, amount);
+            await foodService.UpdateFoodItemStockAsync(id, amount);
             return Ok(item);
         }
     }

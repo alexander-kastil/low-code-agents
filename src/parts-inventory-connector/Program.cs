@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
@@ -12,7 +12,6 @@ Console.WriteLine("Parts Inventory Search Connector\n");
 
 var settings = Settings.LoadSettings();
 
-// Initialize Graph
 InitializeGraph(settings);
 
 ExternalConnection? currentConnection = null;
@@ -38,14 +37,14 @@ while (choice != 0)
     }
     catch (FormatException)
     {
-        // Set to invalid value
+
         choice = -1;
     }
 
     switch (choice)
     {
         case 0:
-            // Exit the program
+
             Console.WriteLine("Goodbye...");
             break;
         case 1:
@@ -131,7 +130,7 @@ async Task<ExternalConnection?> CreateConnectionAsync()
 
     try
     {
-        // Create the connection
+
         var connection = await GraphHelper.CreateConnectionAsync(
             connectionId, connectionName, connectionDescription);
         Console.WriteLine($"New connection created - Name: {connection?.Name}, Id: {connection?.Id}");
@@ -146,7 +145,7 @@ async Task<ExternalConnection?> CreateConnectionAsync()
 
 async Task<ExternalConnection?> SelectExistingConnectionAsync()
 {
-    // TODO
+
     Console.WriteLine("Getting existing connections...");
     try
     {
@@ -158,7 +157,6 @@ async Task<ExternalConnection?> SelectExistingConnectionAsync()
             return null;
         }
 
-        // Display connections
         Console.WriteLine("Choose one of the following connections:");
         var menuNumber = 1;
         foreach (var connection in connections)
@@ -230,7 +228,7 @@ async Task RegisterSchemaAsync()
 
     try
     {
-        // Create the schema
+
         var schema = new Schema
         {
             BaseType = "microsoft.graph.externalItem",
@@ -376,7 +374,6 @@ async Task UpdateItemsFromDatabaseAsync(bool uploadModifiedOnly, string? tenantI
         }
     }
 
-    // If no errors, update our last upload time
     if (success)
     {
         SaveLastUploadTime(newUploadTime);

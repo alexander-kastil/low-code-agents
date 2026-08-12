@@ -1,23 +1,25 @@
 using System;
+using System.Threading.Tasks;
 using FoodApi;
 using FoodApp;
+using FoodApp.Data;
 using FoodApp.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 IConfiguration Configuration = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(Configuration);
 var cfg = Configuration.Get<FoodConfig>();
 
-//Database
 var connectionString = cfg.ConnectionStrings?.DefaultDatabase;
 
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -28,22 +30,24 @@ if (string.IsNullOrWhiteSpace(connectionString))
 connectionString = SqliteDatabase.ResolveConnectionString(connectionString, builder.Environment.ContentRootPath);
 
 builder.Services.AddDbContext<FoodDBContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<IFoodCatalogService, FoodCatalogService>();
 builder.Services.AddControllers();
 
-// MCP Server – exposes food catalog operations as tools at /api/mcp
 builder.Services.AddMcpServer()
     .WithHttpTransport(options => options.Stateless = true)
     .WithToolsFromAssembly();
 
-// Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddOpenApi(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food-Inventory", Version = "v1" });
+    options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0;
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info = new OpenApiInfo { Title = "Food-Inventory", Version = "v1" };
+        return Task.CompletedTask;
+    });
 });
 
-// Cors
 builder.Services.AddCors(o => o.AddPolicy("NoCORS", builder =>
 {
     builder
@@ -55,14 +59,13 @@ builder.Services.AddCors(o => o.AddPolicy("NoCORS", builder =>
 
 var app = builder.Build();
 
-// Ensure database exists and seed baseline data on startup.
 using (var scope = app.Services.CreateScope())
 {
     var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
     try
     {
         var db = scope.ServiceProvider.GetRequiredService<FoodDBContext>();
-        // Use raw SQL to create the Food table if missing (works even when migrations are absent).
+
         DatabaseInitializer.EnsureSchema(db);
         FoodSeeder.SeedIfEmpty(db, cfg.App?.ImgBaseUrl ?? string.Empty);
     }
@@ -72,26 +75,18 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
-// Swagger
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", cfg.App.Title);
-    c.RoutePrefix = string.Empty;
-});
+app.MapOpenApi();
+app.MapScalarApiReference("/", options => options.WithTitle(cfg.App.Title));
 
-//Cors and Routing
 app.UseCors("NoCORS");
 
 app.MapControllers();
 
-// MCP endpoint
 app.MapMcp("/api/mcp");
 
 app.Run();

@@ -1,25 +1,19 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace FoodApi
 {
-    public class FoodDBContext : DbContext //Use DbContext if not using Identity
+    public class FoodDBContext(DbContextOptions<FoodDBContext> options, IConfiguration configuration) : DbContext(options)
     {
-        private readonly string imgBaseUrl;
-
-        public FoodDBContext(DbContextOptions<FoodDBContext> options, IConfiguration configuration) : base(options)
-        {
-            imgBaseUrl = configuration?["App:ImgBaseUrl"] ?? string.Empty;
-        }
-
         public DbSet<FoodItem> Food { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var imgBaseUrl = configuration?["App:ImgBaseUrl"] ?? string.Empty;
             List<FoodItem> list = new List<FoodItem>();
-            // Seed data adjusted per request. Reuse existing image filenames when available; otherwise use "blind-image.jpg".
+
             list.Add(new FoodItem
             {
                 ID = 1,

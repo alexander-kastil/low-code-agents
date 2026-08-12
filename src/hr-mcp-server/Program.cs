@@ -5,29 +5,22 @@ using ModelContextProtocol.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure SQLite-backed employee database
 var connectionString = SqliteDatabase.ResolveConnectionString(
     builder.Configuration.GetConnectionString("EmployeeDatabase")!,
     builder.Environment.ContentRootPath);
 
 builder.Services.AddDbContext<EmployeeDbContext>(options => options.UseSqlite(connectionString));
 
-// Register the employee service
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
-// Add the MCP services: the transport to use (HTTP) and the tools to register.
 builder.Services.AddMcpServer()
     .WithHttpTransport(options => options.Stateless = true)
     .WithToolsFromAssembly();
 
 var app = builder.Build();
 
-// Ensure database is created and seeded
 await EmployeeDbInitializer.InitializeAsync(app.Services);
 
-// Configure the application to use the MCP server
 app.MapMcp();
 
-// Run the application
-// This will start the MCP server and listen for incoming requests.
 app.Run();
