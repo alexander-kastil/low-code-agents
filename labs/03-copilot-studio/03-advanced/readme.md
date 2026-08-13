@@ -22,3 +22,7 @@
 ### Lab 3: Agent Flows
 
 - [Use Agent flows in Copilot Studio](https://learn.microsoft.com/en-us/training/modules/use-agent-flows/)
+
+### Lab 4: Deep reasoning models for complex tasks
+
+- [Recommend a Supplier with a Deep Reasoning Agent](./04-reasoning/lab-01-supplier-recommendation.md): screen ten suppliers against a sourcing policy and an incident log, place the reason keyword on one instruction step, and trace the deep reasoning node in the activity map
