@@ -1,6 +1,6 @@
 # Recommend a Supplier with a Deep Reasoning Agent
 
-Sourcing decisions are the kind of work an agent usually gets almost right: it reads the scorecard, picks the supplier with the best numbers, and quietly ignores the certificate that expires two weeks before the contract starts. The cost of "almost right" here is a twelve month contract awarded to a vendor who was never eligible. In this lab you build a Northwind Traders sourcing advisor that has to screen ten suppliers against four disqualifying rules, respect a volume cap, and split an award across two regions, and you make it work the problem step by step instead of pattern matching an answer.
+Sourcing decisions are the kind of work an agent usually gets almost right: it reads the scorecard, picks the supplier with the best numbers, and quietly ignores the certificate that expires two weeks before the contract starts. The cost of "almost right" here is a twelve month contract awarded to a vendor who was never eligible. In this lab you build an Aurora Provisions sourcing advisor that has to screen ten suppliers against four disqualifying rules, respect a volume cap, and split an award across two regions, and you make it work the problem step by step instead of pattern matching an answer.
 
 You will run the same hard question twice, once on the default model and once with deep reasoning switched on and the reason keyword placed on a single instruction step, then open the activity map to see the reasoning node the run produced. Budget 20 to 25 minutes.
 
@@ -34,7 +34,7 @@ Deep reasoning is not a standalone feature. It plugs into generative orchestrati
 2. Name the agent `Sourcing Advisor` and paste this description:
 
 ```text
-You advise the Northwind Traders sourcing team on annual supply contracts. You screen suppliers against Northwind sourcing policy, apply the award rules, and recommend a volume split that a category manager can sign off.
+You advise the Aurora Provisions sourcing team on annual supply contracts. You screen suppliers against the Aurora sourcing policy, apply the award rules, and recommend a volume split that a category manager can sign off.
 ```
 
 3. Create the agent, then open **Settings** for it.
@@ -69,7 +69,7 @@ Supplier scorecard for organic green tea leaf. One row per supplier with region,
 3. Add `sourcing-policy.docx` with this description:
 
 ```text
-Northwind sourcing policy SP-14 for the 2026 annual tea leaf contract. Contains the contract volume and start date, the four eligibility rules R1 to R4, the concentration cap R5, the continuity rule R6, the ranking order R7, and the escalation rule R8. Use it whenever a request involves awarding, splitting, or screening a contract.
+Aurora sourcing policy SP-14 for the 2026 annual tea leaf contract. Contains the contract volume and start date, the four eligibility rules R1 to R4, the concentration cap R5, the continuity rule R6, the ranking order R7, and the escalation rule R8. Use it whenever a request involves awarding, splitting, or screening a contract.
 ```
 
 4. Add `supplier-incidents.docx` with this description:
@@ -97,7 +97,7 @@ We need to award the 2026 organic green tea leaf contract. Which supplier or sup
 
 3. Note three things: which suppliers it recommends, whether it names any supplier it ruled out, and how long the answer takes.
 
-Expected: a fluent recommendation that leans on the strongest scorecard numbers, typically Harbor Leaf Trading or Nordwind Botanicals, delivered in a couple of seconds. In most runs the answer misses at least one of the disqualifications, the 60 percent concentration cap, or the different-region rule, and it rarely lists the excluded suppliers with the rule that excluded them. Keep this answer open in the transcript, you will compare against it in Exercise 6.
+Expected: a fluent recommendation that leans on the strongest scorecard numbers, typically Harbor Leaf Trading or Rhinevale Botanicals, delivered in a couple of seconds. In most runs the answer misses at least one of the disqualifications, the 60 percent concentration cap, or the different-region rule, and it rarely lists the excluded suppliers with the rule that excluded them. Keep this answer open in the transcript, you will compare against it in Exercise 6.
 
 > **Note:** The baseline is model-dependent and will not be identical for every learner. What matters is not which supplier it named but whether it screened at all: count how many of the four eligibility rules the answer visibly applied.
 
@@ -109,7 +109,7 @@ An agent with deep reasoning on still decides for itself when to use it. The key
 2. Replace the contents with this block:
 
 ```text
-You are the Northwind Sourcing Advisor. When asked to award or split a supply contract, follow these steps in order:
+You are the Aurora Sourcing Advisor. When asked to award or split a supply contract, follow these steps in order:
 
 1. Read sourcing policy SP-14 and extract the contract volume, the contract start date, and rules R1 to R8.
 2. Read the supplier scorecard and list every supplier with its region, capacity, on-time delivery, defect rate, landed price index, and ISO 9001 expiry.
@@ -146,7 +146,7 @@ The policy and the data admit one correct outcome:
 |---------|----------------|
 | Primary | Silverpine Estates, 6,800 cases (56.7 percent of contract volume) |
 | Secondary | Cascade Organics, 5,200 cases, Americas, satisfying the different-region rule |
-| Excluded by R1 | Nordwind Botanicals (ISO expires 2026-01-15), Kestrel Highland Tea (ISO expires 2026-03-10) |
+| Excluded by R1 | Rhinevale Botanicals (ISO expires 2026-01-15), Kestrel Highland Tea (ISO expires 2026-03-10) |
 | Excluded by R2 | Meridian Tea Co. (93.4 percent), Lowfield Commodity Group (94.1 percent) |
 | Excluded by R3 | Harbor Leaf Trading (open critical incident INC-2214), Lowfield Commodity Group (open major incident INC-2231) |
 | Excluded by R4 | Alpen Blattwerk (price index 112) |
@@ -202,7 +202,7 @@ Expected: the lookup answers in about the same time as the Exercise 4 baseline, 
 
 ## Summary
 
-You built the Northwind Sourcing Advisor: an agent with generative orchestration and deep reasoning turned on, grounded on three deliberately contradictory sources, instructed so that exactly one step runs on the deep reasoning model, and traced through the activity map. You can now:
+You built the Aurora Sourcing Advisor: an agent with generative orchestration and deep reasoning turned on, grounded on three deliberately contradictory sources, instructed so that exactly one step runs on the deep reasoning model, and traced through the activity map. You can now:
 
 - Turn on deep reasoning for an agent and state the prerequisites and regional limits it carries.
 - Place the reason keyword on a single instruction step so the slow model runs where judgment lives.
