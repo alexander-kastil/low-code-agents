@@ -2,7 +2,7 @@
 
 Every seller loses the first ten minutes of a customer call stitching together account facts from CRM records, product sheets, email threads, and open support tickets. An assistant that answers account questions, assembles a pre-call briefing, and drafts the follow-up email in one place gives that time back and keeps the reasoning consistent across a whole territory. In this capstone lab you build exactly that assistant in the new Copilot Studio experience, going from a one-sentence description to a published agent grounded on real data.
 
-The scenario company is Northwind Traders, a wholesale distributor whose sellers each manage dozens of accounts. You will create a Sales Account Assistant, sharpen its Instructions, ground it on two knowledge documents, connect an Outlook action and a prebuilt Dataverse MCP server, watch the orchestrator chain them, package a reusable account-research Skill, automate the follow-up with a workflow, and publish for sellers. This lab is based on Microsoft's mcs-orchestration lab, and each step feeds the next: the Instructions shape the Preview tests, the Knowledge and Tools get chained by the orchestrator, the Skill you upload comes from this lab's own companion folder, and the workflow reuses the Outlook action you added earlier.
+The scenario company is Northwind Traders, a wholesale distributor whose sellers each manage dozens of accounts. You will create a Sales Account Assistant, sharpen its Instructions, ground it on two knowledge documents, connect an Outlook action and a prebuilt Dataverse MCP server, watch the orchestrator chain them, package a reusable account-research Skill, build a follow-up workflow and hand it to the agent as a tool, and publish for sellers. This lab is based on Microsoft's mcs-orchestration lab, and each step feeds the next: the Instructions shape the Preview tests, the Knowledge and Tools get chained by the orchestrator, the Skill you upload comes from this lab's own companion folder, and the workflow reuses the Outlook connector you signed in to earlier.
 
 ## What This Lab Covers
 
@@ -16,8 +16,9 @@ The scenario company is Northwind Traders, a wholesale distributor whose sellers
 | 6 | Add the prebuilt Dataverse MCP server | [Tools, MCP, and the New Workflows Designer](../../../../demos/03-copilot-studio/04-ui-update/05-workflows-and-mcp/readme.md) |
 | 7 | Chain knowledge and tools and inspect the plan | [The Unified Build Surface and the New Orchestrator](../../../../demos/03-copilot-studio/04-ui-update/02-unified-build-and-orchestrator/readme.md) |
 | 8 | Package and upload a reusable Skill (SKILL.md) | [Agent Skills in Copilot Studio](../../../../demos/03-copilot-studio/04-ui-update/04-agent-skills/readme.md) |
-| 9 | Automate the follow-up with a workflow and agent node | [Tools, MCP, and the New Workflows Designer](../../../../demos/03-copilot-studio/04-ui-update/05-workflows-and-mcp/readme.md) |
-| 10 | Run an end-to-end test in Preview, then Publish | [The Unified Build Surface and the New Orchestrator](../../../../demos/03-copilot-studio/04-ui-update/02-unified-build-and-orchestrator/readme.md) |
+| 9 | Build and publish a workflow with typed inputs | [Tools, MCP, and the New Workflows Designer](../../../../demos/03-copilot-studio/04-ui-update/05-workflows-and-mcp/readme.md) |
+| 10 | Configure the workflow as a tool and let the agent fill its inputs | [Tools, MCP, and the New Workflows Designer](../../../../demos/03-copilot-studio/04-ui-update/05-workflows-and-mcp/readme.md) |
+| 11 | Run an end-to-end test in Preview, then Publish | [The Unified Build Surface and the New Orchestrator](../../../../demos/03-copilot-studio/04-ui-update/02-unified-build-and-orchestrator/readme.md) |
 
 ## Lab Files
 
@@ -208,26 +209,73 @@ Give me an account brief for Alfreds Futterkiste before my call.
 
 Expected: the skill appears in the **Skills** list as account-research, and the **Preview** answer follows the skill's five headings in order: Account, Relationship, Recent activity, Open items, and Recommended next step. For Alfreds Futterkiste that means the Tier 1 profile, the 40-case Cold Brew order, and the open damaged-shipment case 4821 all land in their sections.
 
-## Step 9: Automate the follow-up with a workflow
+## Step 9: Build and publish the follow-up workflow
 
-A workflow handles a repeated, deterministic process on demand, and an agent node lets the workflow call your assistant as one step in that process. The new workflows designer is in public preview and supports node-by-node testing and versioning, so you can build and validate the follow-up piece by piece. You will assemble a short workflow that takes an account name, has the assistant draft the recap, and sends it through the same Outlook action from Step 5.
+A workflow handles a repeated, deterministic process the agent runs on demand: take an input, run a fixed sequence, return a result. A workflow only becomes callable by an agent when it carries the **When an agent calls the flow** trigger, ends in a **Respond to the agent** action, and is published, so you build all three parts here before wiring anything to the assistant. The piece that makes it useful is the trigger's **Inputs** list: those are the typed values the agent passes in, and without them the workflow can only ever do the same thing with the same data.
 
-1. On the **Build** tab, open **Tools**, add a workflow, and open the new workflows designer (public preview).
-2. Add a trigger that takes an account name as input, using this description:
+1. On the **Build** tab, open the **Tools** component and select **Add a tool**.
+2. Select **Add** next to the search bar, then choose **Workflow**.
+3. The workflows designer opens with a starter template holding two nodes, **When an agent calls the flow** and **Respond to the agent**.
+4. Select the trigger node. In the pane on the right, confirm **Trigger type** reads **When an agent calls the workflow**.
+5. Under **Inputs**, select **Add an input** and choose **Text**. Name it `accountName` and give it this description:
 
 ```text
-Trigger: run the account follow-up. Input: account name (text). Use after a seller finishes a call and wants the recap sent.
+The Northwind account the follow-up is about, for example Around the Horn.
 ```
 
-3. Add an agent node that calls the Sales Account Assistant to generate a follow-up summary for that account name.
-4. Add a send node that reuses the Office 365 Outlook **Send an email** action from Step 5, passing the agent node's summary as the body.
-5. Test each node one at a time with node-by-node testing, then run the whole workflow once.
+6. Select **Add an input** twice more and create these two, both **Text**:
 
-Expected: each node passes its individual test, the agent node returns a follow-up summary for the account you named, and the send node produces a ready-to-send email using that summary. The designer shows a green pass on each node before you run the full workflow end to end.
+```text
+recipientEmail: The mailbox that receives the follow-up email.
+followUpBody: The full follow-up message the seller approved, recapping decisions and next steps.
+```
 
-> **Warning:** Test the send node against your own mailbox first. The node reuses the live Outlook action, so a full workflow run can send a real email; use a safe recipient until you trust the output.
+7. Select the plus between the two nodes and add the Office 365 Outlook **Send an email (V2)** action, reusing the connection you signed in to in Step 5.
+8. Map the email fields to the trigger inputs: **To** takes `recipientEmail`, **Subject** takes the text `Follow-up: ` with `accountName` appended, and **Body** takes `followUpBody`.
+9. Open the **Respond to the agent** node, add a text output named `status`, and set its value to a confirmation such as `Follow-up sent`.
+10. Rename the workflow to Send Account Follow-Up, select the save icon, then select **Publish**.
 
-## Step 10: Run an end-to-end test in Preview, then Publish
+Expected: the designer shows three nodes in order, the trigger pane lists `accountName`, `recipientEmail`, and `followUpBody` each with its own description, and the publish completes without a flow-checker error. The workflow now appears in the agent's **Tools** list on the **Build** tab and on the **Workflows** page, where other agents can reuse it.
+
+> **Note:** If the workflow later fails to show up when adding a tool, it is almost always one of three things: it is not published, its **Respond to the agent** action is missing, or that action has **Asynchronous response** turned on under **Networking**. The agent can only call a workflow that answers in real time.
+
+## Step 10: Configure the workflow as a tool and let the agent fill its inputs
+
+A published workflow is a capability the agent has, not yet one it knows when or how to use. That is what the **Workflow details** dialog settles: the description tells the orchestrator when to reach for the workflow, and each input gets a rule for how its value arrives. **AI** means the agent works the value out from the conversation and the input's description, while **Value** pins it to a fixed value you enter. You will let the agent fill the account name and the message body, and pin the recipient to your own mailbox so a test run cannot email a customer.
+
+1. On the **Build** tab, open the **Tools** component and select the Send Account Follow-Up workflow to open the **Workflow details** dialog.
+2. On the **Details** pane, paste this description:
+
+```text
+Use this workflow to send an approved follow-up email after a customer call. Call it only when the seller has confirmed the recap text. Do not call it to draft or revise the message.
+```
+
+3. Select **Inputs** in the left pane. Each input appears with its type, for example `accountName * (string)`, above a **Name** box, a **Description** box, and a **How is this filled?** choice.
+4. For `accountName`, leave **How is this filled?** on **AI** and paste this description:
+
+```text
+The Northwind account the seller just spoke with. Take it from the conversation, for example Around the Horn.
+```
+
+5. For `followUpBody`, leave **AI** selected and paste this description:
+
+```text
+The follow-up message the seller approved in this conversation, including the recap of decisions and the next steps.
+```
+
+6. For `recipientEmail`, select **Value** and enter your own mailbox address so test runs stay with you.
+7. Select **Outputs** and confirm `status` is returned to the agent, then select **Save**.
+8. Open the **Preview** tab and send this message:
+
+```text
+Draft a follow-up for Around the Horn recapping the backordered case and the replacement date, then send it.
+```
+
+Expected: the assistant drafts the recap, asks you to confirm, and then calls Send Account Follow-Up. **Get rationale** shows the workflow call with `accountName` set to Around the Horn and `followUpBody` carrying the drafted text, the agent reports back the `status` value, and the email lands in the mailbox you pinned in step 6.
+
+> **Warning:** The workflow uses the live Outlook connection, so a run sends a real email. Keep `recipientEmail` pinned to **Value** with your own address until you have watched a full run; switching it to **AI** lets the agent address a customer directly.
+
+## Step 11: Run an end-to-end test in Preview, then Publish
 
 With every component wired, run one **Preview** conversation that exercises Instructions, both Knowledge sources, the Outlook tool, the Dataverse MCP server, and the account-research Skill together, then publish the assistant for sellers. Publishing makes the agent available on channels such as Teams and Microsoft 365 Copilot, so you do it once the Preview loop looks right and sellers reach a version you have actually tested.
 
@@ -253,17 +301,19 @@ Expected: the assistant completes the full flow in one Preview conversation, pro
 | **Get rationale** shows only one source used | The question did not force a cross-source plan, or one source is not ready | Ask the combined Step 7 prompt that needs both order history and open cases, and confirm both documents plus the Dataverse server are listed under **Tools** and **Knowledge** |
 | Uploaded skill does not change the briefing shape | The skill imported but was not triggered, or the request did not match its description | Ask explicitly for an account brief so the request matches the account-research description; confirm the skill is listed under **Skills** |
 | Outlook action never gets called | Tool description is too vague for the orchestrator to match | Sharpen the Step 5 "call it when" description and confirm the connection sign-in completed |
-| Workflow send node sends nothing or errors | Node not tested individually, or the agent node output is not mapped to the email body | Use node-by-node testing on each node first, then map the agent node summary into the send node body |
+| The workflow is not listed when adding a tool | It is unpublished, has no **Respond to the agent** action, or that action has **Asynchronous response** on | Publish the workflow, confirm the **Respond to the agent** node exists, and set **Asynchronous response** to **Off** under **Networking** |
+| The agent never calls the workflow | The **Details** description does not tell the orchestrator when to use it | Paste the Step 10 "call it when" description and re-run the Preview prompt |
+| A workflow input arrives empty or wrong | The input is set to **AI** with a description too vague to fill from the conversation | Sharpen the input description in the **Inputs** pane so it names the value and gives an example, or pin it with **Value** |
 
 ## Summary
 
-You built the Northwind Sales Account Assistant: a new-experience agent created from a description, scoped with Instructions, grounded on two documents, connected to an Outlook action and a prebuilt Dataverse MCP server, extended with a reusable account-research Skill, automated with a follow-up workflow, and published for sellers. You can now:
+You built the Northwind Sales Account Assistant: a new-experience agent created from a description, scoped with Instructions, grounded on two documents, connected to an Outlook action and a prebuilt Dataverse MCP server, extended with a reusable account-research Skill, wired to a published follow-up workflow whose inputs the agent fills, and published for sellers. You can now:
 
 - Create and scope a new-experience agent from a plain-language description.
 - Ground an agent on multiple Knowledge sources and confirm cited answers in **Preview**.
 - Add both a connector action and a prebuilt MCP server as **Tools**, and inspect how the orchestrator chains them with **Get rationale**.
 - Package a task recipe as a SKILL.md file, upload it, and drive consistent briefings from it.
-- Automate a follow-up with a workflow that calls the agent as a node and reuses a connector action.
+- Build a workflow with the agent trigger and typed inputs, publish it, and add it to an agent as a tool whose inputs the orchestrator fills.
 - Run an end-to-end Preview and publish the assistant to seller channels.
 
 Next, take the reasoning skills further in [Trace an Agent's Reasoning in the New Orchestrator](../../../../demos/03-copilot-studio/04-ui-update/02-unified-build-and-orchestrator/demo-02-trace-agent-reasoning.md).
